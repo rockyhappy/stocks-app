@@ -43,23 +43,6 @@ class MainActivity : AppCompatActivity() {
             GrowwTheme {
                 val navController = rememberNavController()
                 MainNavGraph(navController =navController )
-//                Scaffold(modifier = Modifier.fillMaxSize()
-//                    ) { innerPadding ->
-//                    Column(
-//                        modifier = Modifier
-//                            .fillMaxSize()
-//                            .padding(innerPadding)
-//                            .padding(16.dp),
-//                        horizontalAlignment = Alignment.CenterHorizontally,
-//                        verticalArrangement = Arrangement.Center
-//                    ) {
-//                        Greeting(
-//                            name = "Android",
-//                            modifier = Modifier.padding(bottom = 32.dp)
-//                        )
-//                        ThemeSelector()
-//                    }
-//                }
             }
         }
     }

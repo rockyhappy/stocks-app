@@ -1,16 +1,54 @@
 package com.devrachit.groww.presentation.screens.bottomBar
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.DragInteraction
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.devrachit.groww.R
+import com.devrachit.groww.presentation.navigation.NavGraph
+import com.devrachit.groww.presentation.navigation.Screen
+import com.devrachit.groww.presentation.navigation.navigateToTab
+import com.devrachit.groww.presentation.navigation.rememberNavigationItems
+import com.devrachit.groww.utility.composeUtility.NavItem
 import com.devrachit.groww.utility.composeUtility.sdp
+import com.devrachit.groww.utility.constants.Constants.Companion.START_DESTINATION_INNER_NAV
 
 
 @Composable
@@ -19,37 +57,64 @@ fun BottomBarScreen(
     navigateToDetailsScreen: () -> Unit,
     navigateToDisplayScreen: () -> Unit,
 ) {
-    Scaffold(
-        modifier = Modifier
-            .systemBarsPadding()
-            .fillMaxSize()
-            .background(Color.Green),
-        containerColor = Color.Green
-    ) {
-        Text(
-            text = title,
-            modifier = Modifier
-                .systemBarsPadding()
-                .padding(it)
-        )
-        Text(
-            text = title,
-            modifier = Modifier
-                .systemBarsPadding()
-                .padding(top=100.sdp)
-                .clickable {
-                    navigateToDetailsScreen()
-                }
-        )
-        Text(
-            text = title,
-            modifier = Modifier
-                .systemBarsPadding()
-                .padding(top=200.sdp)
-                .clickable {
-                    navigateToDisplayScreen()
-                }
-        )
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val navItems = rememberNavigationItems()
+    val currentRoute = navBackStackEntry?.destination?.route ?: Screen.HomeScreen.route
 
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    BackHandler(enabled = currentRoute == Screen.HomeScreen.route) {
+        showExitDialog = true
+    }
+
+
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.white))
+    ) {
+        NavGraph(
+            navController = navController,
+            onNavigateToDetail = navigateToDetailsScreen,
+            onNavigateToDisplay = navigateToDisplayScreen
+        )
+        Row(
+            modifier = Modifier
+                .padding( top=200.sdp)
+//                .offset(y = yOffset.dp)
+//                .shadowEffect()
+//                .alpha(alpha)
+//                .scale(scale.value)
+                .widthIn(max = (LocalConfiguration.current.screenWidthDp - 24).sdp, min = 300.sdp)
+                .height(70.sdp)
+//                .align(Alignment.BottomCenter)
+                .clip(RoundedCornerShape(36.sdp))
+                .border(
+                    border = BorderStroke(
+                        width = 2.sdp,
+                        color = colorResource(R.color.white).copy(alpha = 0.2f)
+                    ),
+                    shape = RoundedCornerShape(36.sdp)
+                )
+                .background(colorResource(R.color.card_elevated))
+                .padding(horizontal = 22.sdp, vertical = 8.sdp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            navItems.forEach { (_, itemData) ->
+                if (itemData.route != Screen.DisplayScreen.route && itemData.route!= Screen.DetailsScreen.route)
+                    NavItem(
+                        label = itemData.label,
+                        outlinedIconRes = itemData.outlinedIcon,
+                        filledIconRes = itemData.filledIcon,
+                        isSelected = currentRoute == itemData.route,
+                        onClick = {
+                            navigateToTab(navController, itemData.route)
+                        }
+                    )
+            }
+        }
     }
 }

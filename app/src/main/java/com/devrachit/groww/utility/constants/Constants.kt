@@ -9,5 +9,7 @@ class Constants {
         const val BOTTOM_BAR_ROUTE = "bottom_bar"
         const val MAIN_ANIMATION_DURATION = 300
         const val START_DESTINATION = BOTTOM_BAR_ROUTE
+        const val START_DESTINATION_INNER_NAV = HOME_ROUTE
+        const val ANIMATION_DURATION = 300
     }
 }
