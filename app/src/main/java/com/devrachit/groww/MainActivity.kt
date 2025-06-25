@@ -23,8 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.navigation.compose.rememberNavController
+import com.devrachit.groww.presentation.navigation.MainNavGraph
 import com.devrachit.groww.ui.theme.GrowwTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,23 +41,25 @@ class MainActivity : AppCompatActivity() {
         }
         setContent {
             GrowwTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()
-                    ) { innerPadding ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Greeting(
-                            name = "Android",
-                            modifier = Modifier.padding(bottom = 32.dp)
-                        )
-                        ThemeSelector()
-                    }
-                }
+                val navController = rememberNavController()
+                MainNavGraph(navController =navController )
+//                Scaffold(modifier = Modifier.fillMaxSize()
+//                    ) { innerPadding ->
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxSize()
+//                            .padding(innerPadding)
+//                            .padding(16.dp),
+//                        horizontalAlignment = Alignment.CenterHorizontally,
+//                        verticalArrangement = Arrangement.Center
+//                    ) {
+//                        Greeting(
+//                            name = "Android",
+//                            modifier = Modifier.padding(bottom = 32.dp)
+//                        )
+//                        ThemeSelector()
+//                    }
+//                }
             }
         }
     }
