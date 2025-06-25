@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         }
         setContent {
             GrowwTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize()
+                    ) { innerPadding ->
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
