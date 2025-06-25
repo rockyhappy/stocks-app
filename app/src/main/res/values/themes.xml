@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
-    <style name="Theme.Groww" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Groww" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Groww.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="postSplashScreenTheme">@style/Theme.Groww</item>
+    </style>
 </resources>
