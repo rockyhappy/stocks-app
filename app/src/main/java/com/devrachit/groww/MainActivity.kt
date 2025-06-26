@@ -17,22 +17,30 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.devrachit.groww.data.local.datastore.DataStoreRepository
 import com.devrachit.groww.presentation.navigation.MainNavGraph
 import com.devrachit.groww.ui.theme.GrowwTheme
 import com.devrachit.groww.ui.theme.ThemeMode
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    
+    @Inject
+    lateinit var dataStoreRepository: DataStoreRepository
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initializeTheme()
         setupWindow()
         setupSplashScreen()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -43,10 +51,29 @@ class MainActivity : AppCompatActivity() {
         setContent {
             GrowwTheme {
                 val navController = rememberNavController()
-                MainNavGraph(navController =navController )
+                MainNavGraph(navController = navController)
             }
         }
     }
+
+    private fun initializeTheme() {
+        lifecycleScope.launch {
+            try {
+                val savedTheme = dataStoreRepository.readThemeMode()
+                val themeMode = when (savedTheme) {
+                    "LIGHT" -> ThemeMode.LIGHT
+                    "DARK" -> ThemeMode.DARK
+                    "SYSTEM" -> ThemeMode.SYSTEM
+                    else -> ThemeMode.SYSTEM
+                }
+                AppCompatDelegate.setDefaultNightMode(themeMode.nightMode)
+            } catch (e: Exception) {
+                // Fallback to system default if there's an error
+                AppCompatDelegate.setDefaultNightMode(ThemeMode.SYSTEM.nightMode)
+            }
+        }
+    }
+
     private fun setupWindow() {
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -70,14 +97,11 @@ class MainActivity : AppCompatActivity() {
         }.also {
             it.start()
         }
-
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
     }
-
 
     override fun finish() {
         super.finish()

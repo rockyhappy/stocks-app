@@ -40,10 +40,10 @@ import com.devrachit.groww.ui.theme.ThemeMode
 @Composable
 fun ThemeSelector(
     modifier: Modifier = Modifier,
+    currentTheme: ThemeMode = ThemeMode.SYSTEM,
     onThemeSelected: (ThemeMode) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedTheme by remember { mutableStateOf(ThemeMode.SYSTEM) }
 
     fun getThemeIcon(theme: ThemeMode): Int {
         return when (theme) {
@@ -59,7 +59,7 @@ fun ThemeSelector(
     {
         Box {
             Icon(
-                painter = painterResource(getThemeIcon(selectedTheme)),
+                painter = painterResource(getThemeIcon(currentTheme)),
                 contentDescription = "Theme",
                 tint = colorResource(R.color.black),
                 modifier = Modifier
@@ -96,8 +96,7 @@ fun ThemeSelector(
                         },
                         text = { Text(text = theme.displayName, color = colorResource(R.color.black)) },
                         onClick = {
-                            selectedTheme = theme
-                            AppCompatDelegate.setDefaultNightMode(theme.nightMode)
+                            onThemeSelected(theme)
                             expanded = false
                         }
                     )

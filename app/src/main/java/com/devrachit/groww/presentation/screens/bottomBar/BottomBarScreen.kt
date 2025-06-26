@@ -21,13 +21,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -45,6 +43,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.devrachit.groww.R
@@ -53,18 +52,22 @@ import com.devrachit.groww.presentation.navigation.Screen
 import com.devrachit.groww.presentation.navigation.navigateToTab
 import com.devrachit.groww.presentation.navigation.rememberNavigationItems
 import com.devrachit.groww.ui.theme.TextStyleInter20Lh24Fw600
+import com.devrachit.groww.ui.theme.ThemeMode
 import com.devrachit.groww.utility.composeUtility.NavItem
 import com.devrachit.groww.utility.composeUtility.ThemeSelector
 import com.devrachit.groww.utility.composeUtility.sdp
 import com.devrachit.groww.utility.constants.Constants.Companion.APP_TITLE
 import com.devrachit.groww.utility.constants.Constants.Companion.START_DESTINATION_INNER_NAV
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun BottomBarScreen(
     title: String,
     navigateToDetailsScreen: () -> Unit,
     navigateToDisplayScreen: () -> Unit,
+    uiState: BottomBarScreenUiState,
+    onThemeSelected: (ThemeMode) -> Unit
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -76,8 +79,6 @@ fun BottomBarScreen(
     BackHandler(enabled = currentRoute == Screen.HomeScreen.route) {
         showExitDialog = true
     }
-
-
 
     Column(
         modifier = Modifier
@@ -113,6 +114,8 @@ fun BottomBarScreen(
             Spacer(modifier = Modifier.weight(1f))
             ThemeSelector(
                 modifier = Modifier.padding(end = 24.sdp),
+                currentTheme = uiState.currentThemeMode,
+                onThemeSelected = onThemeSelected
             )
         }
         NavGraph(

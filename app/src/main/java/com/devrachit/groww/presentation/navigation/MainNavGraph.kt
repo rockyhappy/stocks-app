@@ -47,6 +47,10 @@ fun MainNavGraph(
                 },
                 navigateToDisplayScreen = {
                     navController.navigate(Screen.DisplayScreen.route)
+                },
+                uiState = uiState.value,
+                onThemeSelected = { themeMode ->
+                    viewmodel.setThemeMode(themeMode)
                 }
             )
         }
