@@ -100,7 +100,7 @@ fun BottomBarScreen(
                     .size(40.sdp)
                     .border(
                         border = BorderStroke(width=3.sdp, brush = Brush.horizontalGradient(
-                            colors = listOf(Color(0xFFFBBF24), Color(0xFFF59E0B), Color(0xFFD97706),Color(0xFFB45309),Color(0xFF92400E) )
+                            colors = listOf(Color(0xFFFBBF24), Color(0xFFF59E0B), Color(0xFFD97706),Color(0xFFB45309) )
                         )),
                         shape= RoundedCornerShape(56.sdp)
                     )

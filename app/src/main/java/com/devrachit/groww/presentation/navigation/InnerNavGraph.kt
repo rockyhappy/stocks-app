@@ -32,8 +32,10 @@ fun NavGraph(
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             HomeScreen(
                 title = uiState.title,
+                uiState = uiState,
                 onNavigateToDetail = onNavigateToDetail,
-                onNavigationToDisplay = onNavigateToDisplay
+                onNavigationToDisplay = onNavigateToDisplay,
+                onRefresh = viewModel::getTopGainersLosersActiveDriver
             )
         }
         animatedComposable(Screen.WaitlistScreen.route)
