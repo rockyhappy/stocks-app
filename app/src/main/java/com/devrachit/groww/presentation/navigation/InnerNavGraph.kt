@@ -2,6 +2,7 @@ package com.devrachit.groww.presentation.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -15,13 +16,15 @@ import com.devrachit.groww.utility.constants.Constants.Companion.START_DESTINATI
 
 @Composable
 fun NavGraph(
+    modifier : Modifier=Modifier,
     navController: NavHostController = rememberNavController(),
     onNavigateToDetail: () -> Unit,
-    onNavigateToDisplay: () -> Unit
+    onNavigateToDisplay: () -> Unit,
 ) {
     NavHost(
         navController = navController,
-        startDestination = START_DESTINATION_INNER_NAV
+        startDestination = START_DESTINATION_INNER_NAV,
+        modifier = modifier
     ) {
         animatedComposable(Screen.HomeScreen.route)
         {

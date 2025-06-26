@@ -26,6 +26,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.devrachit.groww.presentation.navigation.MainNavGraph
 import com.devrachit.groww.ui.theme.GrowwTheme
+import com.devrachit.groww.ui.theme.ThemeMode
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -97,75 +98,5 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     GrowwTheme {
         Greeting("Android")
-    }
-}
-
-enum class ThemeMode(val displayName: String, val nightMode: Int) {
-    SYSTEM("System Default", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
-    LIGHT("Light Mode", AppCompatDelegate.MODE_NIGHT_NO),
-    DARK("Dark Mode", AppCompatDelegate.MODE_NIGHT_YES)
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ThemeSelector() {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedTheme by remember { mutableStateOf(ThemeMode.SYSTEM) }
-
-    Column {
-        Text(
-            text = "Theme Selection",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-        
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
-        ) {
-            OutlinedTextField(
-                value = selectedTheme.displayName,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text("Choose Theme") },
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = null
-                    )
-                },
-                modifier = Modifier
-                    .menuAnchor()
-                    .fillMaxWidth()
-            )
-            
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                ThemeMode.values().forEach { theme ->
-                    DropdownMenuItem(
-                        text = { 
-                            Text(
-                                text = theme.displayName,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        },
-                        onClick = {
-                            selectedTheme = theme
-                            AppCompatDelegate.setDefaultNightMode(theme.nightMode)
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
-        
-        Text(
-            text = "Current: ${selectedTheme.displayName}",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 8.dp)
-        )
     }
 }

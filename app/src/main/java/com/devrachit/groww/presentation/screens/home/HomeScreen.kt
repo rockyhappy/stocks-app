@@ -1,5 +1,6 @@
 package com.devrachit.groww.presentation.screens.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ fun HomeScreen(
        Column(
            modifier = Modifier
                .fillMaxSize()
+               .background(Color.Green)
                .padding(horizontal = 16.sdp)
        ){
            Text(text = title)
