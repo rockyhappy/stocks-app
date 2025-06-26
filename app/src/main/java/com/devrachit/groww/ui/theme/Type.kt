@@ -446,3 +446,53 @@ fun TextStyleInter22Lh36Fw700(): TextStyle {
         fontWeight = FontWeight(700)
     )
 }
+// Tangerine Typography Functions (Decorative font)
+@Composable
+fun TextStyleTangerine14Lh20Fw400(): TextStyle {
+    return DefaultTextStyle.copy(
+        fontSize = 14.ssp,
+        lineHeight = 20.ssp,
+        fontFamily = FontFamily(Font(R.font.tangerine_logo)),
+        fontWeight = FontWeight(400),
+    )
+}
+
+@Composable
+fun TextStyleTangerine16Lh20Fw400(): TextStyle {
+    return DefaultTextStyle.copy(
+        fontSize = 16.ssp,
+        lineHeight = 20.ssp,
+        fontFamily = FontFamily(Font(R.font.tangerine_logo)),
+        fontWeight = FontWeight(400),
+    )
+}
+
+@Composable
+fun TextStyleTangerine18Lh24Fw400(): TextStyle {
+    return DefaultTextStyle.copy(
+        fontSize = 18.ssp,
+        lineHeight = 24.ssp,
+        fontFamily = FontFamily(Font(R.font.tangerine_logo)),
+        fontWeight = FontWeight(400),
+    )
+}
+
+@Composable
+fun TextStyleTangerine20Lh26Fw400(): TextStyle {
+    return DefaultTextStyle.copy(
+        fontSize = 20.ssp,
+        lineHeight = 26.ssp,
+        fontFamily = FontFamily(Font(R.font.tangerine_logo)),
+        fontWeight = FontWeight(400),
+    )
+}
+
+@Composable
+fun TextStyleTangerine24Lh30Fw400(): TextStyle {
+    return DefaultTextStyle.copy(
+        fontSize = 24.ssp,
+        lineHeight = 30.ssp,
+        fontFamily = FontFamily(Font(R.font.tangerine_logo)),
+        fontWeight = FontWeight(400),
+    )
+}

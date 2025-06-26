@@ -32,7 +32,7 @@ class HomeScreenViewmodel @Inject constructor(
     fun getTopGainersLosersActiveDriver() {
         val coroutineScope = viewModelScope
         coroutineScope.launch(Dispatchers.IO) {
-            getTopGainersLosers()
+//            getTopGainersLosers()
         }
     }
 
