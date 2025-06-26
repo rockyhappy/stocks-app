@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import com.devrachit.groww.R
 import com.devrachit.groww.utility.composeUtility.sdp
 
 @Composable
@@ -30,7 +32,7 @@ fun HomeScreen(
        Column(
            modifier = Modifier
                .fillMaxSize()
-               .background(Color.Green)
+               .background(color = colorResource(R.color.white))
                .padding(horizontal = 16.sdp)
        ){
            Text(text = title)

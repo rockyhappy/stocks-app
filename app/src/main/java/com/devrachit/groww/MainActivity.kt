@@ -29,15 +29,17 @@ import com.devrachit.groww.presentation.navigation.MainNavGraph
 import com.devrachit.groww.ui.theme.GrowwTheme
 import com.devrachit.groww.ui.theme.ThemeMode
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    
+
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializeTheme()
@@ -57,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeTheme() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val savedTheme = dataStoreRepository.readThemeMode()
                 val themeMode = when (savedTheme) {
@@ -66,10 +68,15 @@ class MainActivity : AppCompatActivity() {
                     "SYSTEM" -> ThemeMode.SYSTEM
                     else -> ThemeMode.SYSTEM
                 }
-                AppCompatDelegate.setDefaultNightMode(themeMode.nightMode)
+                withContext(Dispatchers.Main) {
+                    AppCompatDelegate.setDefaultNightMode(themeMode.nightMode)
+                }
+
             } catch (e: Exception) {
-                // Fallback to system default if there's an error
-                AppCompatDelegate.setDefaultNightMode(ThemeMode.SYSTEM.nightMode)
+                withContext(Dispatchers.Main) {
+                    AppCompatDelegate.setDefaultNightMode(ThemeMode.SYSTEM.nightMode)
+                }
+
             }
         }
     }

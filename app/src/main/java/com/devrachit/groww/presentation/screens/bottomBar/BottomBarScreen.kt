@@ -60,6 +60,7 @@ import com.devrachit.groww.utility.constants.Constants.Companion.APP_TITLE
 import com.devrachit.groww.utility.constants.Constants.Companion.START_DESTINATION_INNER_NAV
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.shadow
 
 @Composable
 fun BottomBarScreen(
@@ -130,6 +131,9 @@ fun BottomBarScreen(
 //                .widthIn(max = (LocalConfiguration.current.screenWidthDp ).sdp, min = 300.sdp)
                 .fillMaxWidth()
                 .height(70.sdp)
+                .shadow(
+                    elevation = 10.sdp,
+                )
 //                .clip(RoundedCornerShape(36.sdp))
 //                .border(
 //                    border = BorderStroke(
@@ -139,9 +143,9 @@ fun BottomBarScreen(
 //                    shape = RoundedCornerShape(36.sdp)
 //                )
                 .background(colorResource(R.color.card_elevated))
-                .padding(horizontal = 22.sdp, vertical = 8.sdp),
+                ,
             horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+//            verticalAlignment = Alignment.CenterVertically
         ) {
             navItems.forEach { (_, itemData) ->
                 if (itemData.route != Screen.DisplayScreen.route && itemData.route!= Screen.DetailsScreen.route)
@@ -152,7 +156,8 @@ fun BottomBarScreen(
                         isSelected = currentRoute == itemData.route,
                         onClick = {
                             navigateToTab(navController, itemData.route)
-                        }
+                        },
+                        modifier = Modifier.weight(1f)
                     )
             }
         }
