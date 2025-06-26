@@ -102,7 +102,7 @@ fun StockItem(
 
                 is StockType.Loser -> Text(
                     modifier = Modifier.padding(start = 16.sdp, bottom = 12.sdp),
-                    text = "-${stock.changeAmount} (${stock.changePercentage})",
+                    text = "${stock.changeAmount} (${stock.changePercentage})",
                     color = colorResource(R.color.red_normal_500),
                     style = TextStyleInter12Lh16Fw600(),
                     maxLines = 1,

@@ -43,6 +43,7 @@ object NetworkModule {
 //    }
     @Singleton
     @Provides
+    @WithoutChucker
     fun providesOkHttpClient(@ApplicationContext context: Context) = OkHttpClient.Builder()
         .cache(Cache(context.cacheDir, CACHE_SIZE))
         .addInterceptor { chain ->

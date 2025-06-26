@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -31,7 +33,15 @@ import com.devrachit.groww.domain.models.StockType
 import com.devrachit.groww.presentation.screens.home.components.HomeScreenShimmer
 import com.devrachit.groww.presentation.screens.home.components.SeeMoreCard
 import com.devrachit.groww.presentation.screens.home.components.StockItem
+import com.devrachit.groww.presentation.screens.home.components.StockListSection
+import com.devrachit.groww.ui.theme.TextStyleInter18Lh24Fw700
+import com.devrachit.groww.ui.theme.TextStyleInter20Lh24Fw500
+import com.devrachit.groww.ui.theme.TextStyleInter20Lh24Fw600
 import com.devrachit.groww.utility.composeUtility.sdp
+import com.devrachit.groww.utility.constants.Constants.Companion.API_KEY_FAILURE
+import com.devrachit.groww.utility.constants.Constants.Companion.MOSTLY_TRADED
+import com.devrachit.groww.utility.constants.Constants.Companion.TOP_GAINERS
+import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -62,66 +72,40 @@ fun HomeScreen(
                .background(color = colorResource(R.color.white))
 
        ){
-           when{
-               !uiState.isLoading  && uiState.gainersList!=emptyList<Stock>()-> {
-
-
-
-
-               }
-               uiState.isLoading -> {
-                   HomeScreenShimmer()
-               }
-               else -> {
-                   Row(
-                       modifier = Modifier
-                           .fillMaxSize()
-                           .padding(top = 16.sdp, start=8.sdp, end=8.sdp)
-                       ,
-                       horizontalArrangement = Arrangement.SpaceAround,
-                       verticalAlignment = Alignment.CenterVertically
-                   ){
-                       val sampleStock = Stock(
-                           ticker = "Brain Base Solutions ",
-                           price = "150.0",
-                           changeAmount = "3.75",
-                           changePercentage = "2.5%",
-                           volume = "12345678"
-                       )
-                       StockItem(
-                           modifier = Modifier.weight(1f),
-                           stock = sampleStock,
-                           stockType = StockType.Gainer(),
-                           onCompanyClick = {}
-                       )
-                       SeeMoreCard(
-                           title1 = "See More",
-                           title2 = "Gainers",
-                           title3 = "Top Gainers",
-                           title4 = "Top Gainers",
-                           modifier = Modifier.weight(1f),
-                           onClick = {onNavigationToDisplay()}
-                       )
-                   }
-               }
+           if(!uiState.isLoading && uiState.gainersList== emptyList<Stock>())
+           {
+               Text(
+                   text = API_KEY_FAILURE,
+                   style = TextStyleInter20Lh24Fw600(),
+                   modifier = Modifier.padding(16.sdp)
+               )
            }
-//           Text(text = uiState.toString())
-           Button(
-               onClick = {onNavigateToDetail()},
-               modifier = Modifier.padding(top = 16.sdp),
-               enabled = true,
-               content = {
-                   Text(text = "Navigate to Detail")
-               }
+
+
+           StockListSection(
+               title = TOP_GAINERS,
+               stockList = uiState.gainersList,
+               isLoading = uiState.isLoading,
+               onNavigationToDisplay = onNavigationToDisplay,
+               stockType = StockType.Gainer()
            )
-           Button(
-               onClick = {onNavigationToDisplay()},
-               modifier = Modifier.padding(top = 16.sdp),
-               enabled = true,
-               content = {
-                   Text(text = "Navigate to Display")
-               }
+
+           StockListSection(
+               title = TOP_LOSERS,
+               stockList = uiState.losersList,
+               isLoading = uiState.isLoading,
+               onNavigationToDisplay = onNavigationToDisplay,
+               stockType = StockType.Loser()
            )
+
+           StockListSection(
+               title = MOSTLY_TRADED,
+               stockList = uiState.activeList,
+               isLoading = uiState.isLoading,
+               onNavigationToDisplay = onNavigationToDisplay,
+               stockType = StockType.Active()
+           )
+           Spacer(modifier = Modifier.height(16.sdp))
 
        }
         PullRefreshIndicator(

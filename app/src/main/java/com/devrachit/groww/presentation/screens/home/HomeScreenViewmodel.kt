@@ -32,29 +32,24 @@ class HomeScreenViewmodel @Inject constructor(
     fun getTopGainersLosersActiveDriver() {
         val coroutineScope = viewModelScope
         coroutineScope.launch(Dispatchers.IO) {
-//            getTopGainersLosers()
+            getTopGainersLosers()
         }
     }
 
     suspend fun getTopGainersLosers() {
-        Log.d("Groww", "getTopGainersLosers: ")
         getGainerLoserActiveStocks.invoke().collectLatest { response ->
             when (response) {
                 is Resource.Loading -> {
-                    Log.d("HomeScreenViewmodel", "getTopGainersLosers: Loading")
                     _uiState.update { it.copy(isLoading = true) }
-
                 }
 
                 is Resource.Error -> {
-                    Log.d("HomeScreenViewmodel", "getTopGainersLosers: Error")
                     _uiState.update {
                         it.copy(isLoading = false, error = response.message)
                     }
                 }
 
                 is Resource.Success -> {
-                    Log.d("HomeScreenViewmodel", "getTopGainersLosers: Success")
                     _uiState.update {
                         it.copy(
                             isLoading = false,
