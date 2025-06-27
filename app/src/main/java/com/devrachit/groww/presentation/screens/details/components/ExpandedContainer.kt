@@ -35,6 +35,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devrachit.groww.R
@@ -53,21 +55,26 @@ fun ExpandableContainer(
             .fillMaxWidth()
             .background(colorResource(R.color.white), RoundedCornerShape(8.dp))
             .animateContentSize()
+            .padding(8.dp)
             .clickable { expanded = !expanded }
             ,
-        elevation = CardDefaults.cardElevation(1.sdp)
+        elevation = CardDefaults.cardElevation(1.sdp),
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.card_elevated)
+        )
 
     ) {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom =8.sdp)
+//                    .background(colorResource(R.color.white))
             ) {
                 Text(
                     text = heading,
 //                    fontFamily = Font(R.font.inter_medium_500),
-                    fontSize = 16.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Normal,
                     color= colorResource(R.color.black),
@@ -85,10 +92,8 @@ fun ExpandableContainer(
                     text = description,
                     fontWeight = FontWeight.Normal,
                     fontStyle = FontStyle.Normal,
-
-//                    fontFamily = Constants.CustomFontFamily,
                     color= colorResource(R.color.black),
-                    fontSize = 14.sp,
+                    fontSize = 11.sp,
                     modifier = Modifier.padding(start=16.dp,end = 16.dp,bottom = 16.sdp,top = 8.dp)
                 )
             }
