@@ -66,9 +66,6 @@ fun MainNavGraph(
             )
         }
         mainAnimatedComposable(screen = Screen.DisplayScreen) { backStackEntry ->
-//            val passData = remember(backStackEntry) {
-//                backStackEntry.savedStateHandle.get<DisplayPassData>("passData")
-//            }
             val passData = remember {
                 navController.previousBackStackEntry
                     ?.savedStateHandle
@@ -77,7 +74,10 @@ fun MainNavGraph(
 
             val viewmodel = hiltViewModel<DisplayScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
+            viewmodel.setListData(passData?.list?: emptyList())
             DisplayListScreen(
+                uiState = uiState.value,
+                onRefresh = viewmodel::getTopGainersLosersActiveDriver,
                 title = passData?.title?:"Null Data",
                 navigateToDetailsScreen = {
                     navController.navigate(Screen.DetailsScreen.route)
