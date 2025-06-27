@@ -4,7 +4,10 @@ import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devrachit.groww.domain.models.Stock
+import com.devrachit.groww.domain.models.StockType
 import com.devrachit.groww.domain.usecases.GetGainerLoserActiveStocks.GetGainerLoserActiveStocks
+import com.devrachit.groww.utility.constants.Constants.Companion.TOP_GAINERS
+import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 import com.devrachit.groww.utility.networkUtility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -50,9 +53,11 @@ class DisplayScreenViewmodel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            gainersList = response.data?.topGainers ?: emptyList(),
-                            losersList = response.data?.topLosers ?: emptyList(),
-                            activeList = response.data?.mostActive ?: emptyList()
+                            data=when(_uiState.value.title){
+                                TOP_GAINERS -> {response.data?.topGainers ?: emptyList()}
+                                TOP_LOSERS->{response.data?.topLosers ?: emptyList()}
+                                else -> {response.data?.mostActive ?: emptyList()}
+                            }
                         )
                     }
                 }

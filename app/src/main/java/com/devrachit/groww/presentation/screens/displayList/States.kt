@@ -8,7 +8,4 @@ data class DisplayListUiState(
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
     val error : String? = null,
-    val gainersList : List<Stock> = emptyList(),
-    val losersList : List<Stock> = emptyList(),
-    val activeList : List<Stock> = emptyList(),
 )
