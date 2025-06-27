@@ -35,6 +35,10 @@ import com.devrachit.groww.presentation.screens.home.components.StockItem
 import com.devrachit.groww.ui.theme.TextStyleInter18Lh24Fw700
 import com.devrachit.groww.ui.theme.TextStyleInter22Lh36Fw700
 import com.devrachit.groww.utility.composeUtility.sdp
+import com.devrachit.groww.utility.constants.Constants.Companion.MOSTLY_TRADED
+import com.devrachit.groww.utility.constants.Constants.Companion.START_DESTINATION_INNER_NAV
+import com.devrachit.groww.utility.constants.Constants.Companion.TOP_GAINERS
+import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
@@ -86,7 +90,12 @@ fun DisplayListScreen(
                     StockItem(
                         modifier = Modifier,
                         stock = uiState.data[index],
-                        stockType = StockType.Gainer(),
+                        stockType = when (title) {
+                            TOP_GAINERS -> StockType.Gainer()
+                            TOP_LOSERS-> StockType.Loser()
+                            else -> StockType.Active()
+
+                        },
                         onCompanyClick = navigateToDetailsScreen
                     )
                 }
