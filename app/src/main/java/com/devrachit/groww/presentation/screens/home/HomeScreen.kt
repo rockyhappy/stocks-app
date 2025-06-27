@@ -49,7 +49,7 @@ fun HomeScreen(
     uiState: HomeScreenUiState,
     title: String,
     onNavigateToDetail: () -> Unit,
-    onNavigationToDisplay: () -> Unit,
+    onNavigationToDisplay: (type: StockType) -> Unit,
     onRefresh: () -> Unit
 ) {
 
@@ -86,7 +86,7 @@ fun HomeScreen(
                title = TOP_GAINERS,
                stockList = uiState.gainersList,
                isLoading = uiState.isLoading,
-               onNavigationToDisplay = onNavigationToDisplay,
+               onNavigationToDisplay = {onNavigationToDisplay(StockType.Gainer())},
                stockType = StockType.Gainer()
            )
 
@@ -94,7 +94,7 @@ fun HomeScreen(
                title = TOP_LOSERS,
                stockList = uiState.losersList,
                isLoading = uiState.isLoading,
-               onNavigationToDisplay = onNavigationToDisplay,
+               onNavigationToDisplay = {onNavigationToDisplay(StockType.Loser())},
                stockType = StockType.Loser()
            )
 
@@ -102,7 +102,7 @@ fun HomeScreen(
                title = MOSTLY_TRADED,
                stockList = uiState.activeList,
                isLoading = uiState.isLoading,
-               onNavigationToDisplay = onNavigationToDisplay,
+               onNavigationToDisplay = {onNavigationToDisplay(StockType.Active())},
                stockType = StockType.Active()
            )
            Spacer(modifier = Modifier.height(16.sdp))
