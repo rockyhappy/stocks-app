@@ -39,7 +39,6 @@ fun Logo(
 
     Box(
         modifier = modifier
-            .size(30.sdp)
             .background(color = pastelColors.random(), shape = RoundedCornerShape(8.sdp)),
         contentAlignment = Alignment.Center
     ) {

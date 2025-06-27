@@ -22,6 +22,15 @@ class DetailsScreenViewmodel @Inject constructor(
     private val _uiState = MutableStateFlow(DetailsScreenUiState())
     val uiState : StateFlow<DetailsScreenUiState> = _uiState.asStateFlow()
 
+    init{
+//        getCompanyDetails()
+    }
+
+    fun setTicker(ticker: String) {
+        _uiState.update { it.copy(ticker = ticker) }
+//        getCompanyDetails()
+
+    }
     fun getCompanyDetails() {
         val coroutineScope = viewModelScope
         coroutineScope.launch(Dispatchers.IO) {
@@ -45,6 +54,8 @@ class DetailsScreenViewmodel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
+                            companyDetails = response.data,
+                            error = null
                         )
                     }
                 }

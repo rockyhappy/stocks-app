@@ -49,7 +49,6 @@ fun MainNavGraph(
                     navController.navigate(Screen.DetailsScreen.route)
                 },
                 navigateToDisplayScreen = { passData : DisplayPassData ->
-                    Log.d("PassData", passData.toString())
                     navController.currentBackStackEntry?.savedStateHandle?.set("passData", passData)
                     navController.navigate(Screen.DisplayScreen.route)
                 },
@@ -67,8 +66,12 @@ fun MainNavGraph(
             }
             val viewmodel = hiltViewModel<DetailsScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
+//            viewmodel.setTicker(passData?:"")
+            viewmodel.setTicker("IBM")
             DetailsScreen(
                 title = passData?:uiState.value.title,
+                onRefresh = viewmodel::getCompanyDetails,
+                uiState=uiState.value
             )
         }
         mainAnimatedComposable(screen = Screen.DisplayScreen) { backStackEntry ->
