@@ -66,7 +66,7 @@ import com.devrachit.groww.domain.models.DisplayPassData
 @Composable
 fun BottomBarScreen(
     title: String,
-    navigateToDetailsScreen: () -> Unit,
+    navigateToDetailsScreen: (ticker:String) -> Unit,
     navigateToDisplayScreen: (passData: DisplayPassData) -> Unit,
     uiState: BottomBarScreenUiState,
     onThemeSelected: (ThemeMode) -> Unit

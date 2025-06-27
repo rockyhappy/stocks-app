@@ -23,7 +23,7 @@ import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 fun NavGraph(
     modifier : Modifier=Modifier,
     navController: NavHostController = rememberNavController(),
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (ticker: String) -> Unit,
     onNavigateToDisplay: (passData: DisplayPassData) -> Unit,
 ) {
     NavHost(

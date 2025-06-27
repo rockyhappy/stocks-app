@@ -46,7 +46,7 @@ fun DisplayListScreen(
     uiState: DisplayListUiState,
     onRefresh: () -> Unit,
     title: String,
-    navigateToDetailsScreen: () -> Unit
+    navigateToDetailsScreen: (ticker:String) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -96,7 +96,7 @@ fun DisplayListScreen(
                             else -> StockType.Active()
 
                         },
-                        onCompanyClick = navigateToDetailsScreen
+                        onCompanyClick = {navigateToDetailsScreen(uiState.data[index].ticker)}
                     )
                 }
             }

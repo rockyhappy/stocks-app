@@ -48,7 +48,7 @@ import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 fun HomeScreen(
     uiState: HomeScreenUiState,
     title: String,
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (ticker: String) -> Unit,
     onNavigationToDisplay: (type: StockType) -> Unit,
     onRefresh: () -> Unit
 ) {
@@ -87,7 +87,8 @@ fun HomeScreen(
                stockList = uiState.gainersList,
                isLoading = uiState.isLoading,
                onNavigationToDisplay = {onNavigationToDisplay(StockType.Gainer())},
-               stockType = StockType.Gainer()
+               stockType = StockType.Gainer(),
+               onStockClick = {onNavigateToDetail(it)}
            )
 
            StockListSection(
@@ -95,7 +96,8 @@ fun HomeScreen(
                stockList = uiState.losersList,
                isLoading = uiState.isLoading,
                onNavigationToDisplay = {onNavigationToDisplay(StockType.Loser())},
-               stockType = StockType.Loser()
+               stockType = StockType.Loser(),
+               onStockClick = {onNavigateToDetail(it)}
            )
 
            StockListSection(
@@ -103,7 +105,8 @@ fun HomeScreen(
                stockList = uiState.activeList,
                isLoading = uiState.isLoading,
                onNavigationToDisplay = {onNavigationToDisplay(StockType.Active())},
-               stockType = StockType.Active()
+               stockType = StockType.Active(),
+               onStockClick = {onNavigateToDetail(it)}
            )
            Spacer(modifier = Modifier.height(16.sdp))
 

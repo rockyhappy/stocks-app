@@ -44,7 +44,8 @@ fun MainNavGraph(
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             BottomBarScreen(
                 title = uiState.value.title,
-                navigateToDetailsScreen = {
+                navigateToDetailsScreen = { ticker :String ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("ticker", ticker)
                     navController.navigate(Screen.DetailsScreen.route)
                 },
                 navigateToDisplayScreen = { passData : DisplayPassData ->
@@ -59,10 +60,15 @@ fun MainNavGraph(
             )
         }
         mainAnimatedComposable(screen = Screen.DetailsScreen) {
+            val passData = remember {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.get<String>("ticker")
+            }
             val viewmodel = hiltViewModel<DetailsScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             DetailsScreen(
-                title = uiState.value.title,
+                title = passData?:uiState.value.title,
             )
         }
         mainAnimatedComposable(screen = Screen.DisplayScreen) { backStackEntry ->
@@ -79,7 +85,8 @@ fun MainNavGraph(
                 uiState = uiState.value,
                 onRefresh = viewmodel::getTopGainersLosersActiveDriver,
                 title = passData?.title?:"Null Data",
-                navigateToDetailsScreen = {
+                navigateToDetailsScreen = {ticker :String->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("ticker", ticker)
                     navController.navigate(Screen.DetailsScreen.route)
                 }
             )
