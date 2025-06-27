@@ -17,23 +17,5 @@ class GetGainerLoserActiveStocks @Inject constructor(
         val result = safeApiCall { homeRepository.getGainersLosersActives().toDomainModel() }
         emit(result)
 
-
-
-
-
-//        runCatching {
-//            homeRepository.getGainersLosersActives().toDomainModel()
-//        }.onSuccess { data ->
-//            emit(Resource.Success(data))
-//        }.onFailure { throwable ->
-//            val message = when (throwable) {
-//                is HttpException -> throwable.localizedMessage
-//                    ?: "An unexpected error occurred\nResponse code: ${throwable.code()}"
-//                else -> "Couldn't reach the server\nCheck your internet connection"
-//            }
-//            emit(Resource.Error(message))
-//            throwable.printStackTrace()
-//        }
-
     }
 }

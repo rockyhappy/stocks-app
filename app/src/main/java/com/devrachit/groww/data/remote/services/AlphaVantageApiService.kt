@@ -1,5 +1,6 @@
 package com.devrachit.groww.data.remote.services
 
+import com.devrachit.groww.data.remote.dto.CompanyDetailsDto
 import com.devrachit.groww.data.remote.dto.TopGainersLosersActivesDto
 import com.devrachit.groww.utility.constants.Constants.Companion.API_KEY
 import retrofit2.http.GET
@@ -12,11 +13,11 @@ interface AlphaVantageApiService {
         @Query("apikey") apiKey: String = API_KEY,
     ): TopGainersLosersActivesDto
 
-//    @GET("query?function=OVERVIEW")
-//    suspend fun getCompanyDetails(
-//        @Query("symbol") ticker: String,
-//        @Query("apikey") apiKey: String = API_KEY,
-//    ): CompanyDto
+    @GET("query?function=OVERVIEW")
+    suspend fun getCompanyDetails(
+        @Query("symbol") ticker: String,
+        @Query("apikey") apiKey: String = API_KEY,
+    ): CompanyDetailsDto
 //
 //    @GET("query?function=TIME_SERIES_INTRADAY")
 //    suspend fun getIntaDayPrices(
