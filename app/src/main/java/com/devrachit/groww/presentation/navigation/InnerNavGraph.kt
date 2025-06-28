@@ -8,18 +8,23 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.devrachit.groww.domain.models.DisplayPassData
+import com.devrachit.groww.domain.models.StockType
 import com.devrachit.groww.presentation.screens.home.HomeScreen
 import com.devrachit.groww.presentation.screens.home.HomeScreenViewmodel
 import com.devrachit.groww.presentation.screens.watchlist.WatchlistScreen
 import com.devrachit.groww.presentation.screens.watchlist.WatchlistScreenViewmodel
+import com.devrachit.groww.utility.constants.Constants.Companion.MOSTLY_TRADED
 import com.devrachit.groww.utility.constants.Constants.Companion.START_DESTINATION_INNER_NAV
+import com.devrachit.groww.utility.constants.Constants.Companion.TOP_GAINERS
+import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 
 @Composable
 fun NavGraph(
     modifier : Modifier=Modifier,
     navController: NavHostController = rememberNavController(),
-    onNavigateToDetail: () -> Unit,
-    onNavigateToDisplay: () -> Unit,
+    onNavigateToDetail: (ticker: String) -> Unit,
+    onNavigateToDisplay: (passData: DisplayPassData) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -34,7 +39,17 @@ fun NavGraph(
                 title = uiState.title,
                 uiState = uiState,
                 onNavigateToDetail = onNavigateToDetail,
-                onNavigationToDisplay = onNavigateToDisplay,
+                onNavigationToDisplay ={ type: StockType->
+                    val passData = DisplayPassData(
+                        title = when(type){
+                            is StockType.Gainer -> TOP_GAINERS
+                            is StockType.Loser -> TOP_LOSERS
+                            is StockType.Active -> MOSTLY_TRADED
+                        },
+                        list = uiState.gainersList
+                    )
+                    onNavigateToDisplay(passData)
+                },
                 onRefresh = viewModel::getTopGainersLosersActiveDriver
             )
         }
@@ -44,7 +59,7 @@ fun NavGraph(
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle().value
             WatchlistScreen(
                 title = uiState.title,
-                onNavigationToDisplay = onNavigateToDisplay,
+                onNavigationToDisplay = {},
                 onNavigateToDetail = onNavigateToDetail
             )
         }

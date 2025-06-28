@@ -1,5 +1,27 @@
 package com.devrachit.groww.presentation.screens.details
 
+import com.devrachit.groww.data.remote.dto.OhlcvDataDto
+import com.devrachit.groww.domain.models.CompanyDetails
+import com.devrachit.groww.domain.models.OhlcvData
+
 data class DetailsScreenUiState(
-    val title: String = "Details Screen"
+    val title: String = "Details Screen",
+    val ticker : String = "",
+    val error : String? = null,
+    val isLoading : Boolean = false,
+    val companyDetails : CompanyDetails?= null,
+    val isRefreshing: Boolean = false,
 )
+
+data class GraphState(
+    val data : Map<String, OhlcvData> = emptyMap(),
+    val graphType: GraphType = GraphType.DAY,
+)
+
+enum class GraphType {
+    DAY,
+    WEEK,
+    MONTH,
+    SIX_MONTH,
+    YEAR,
+}

@@ -14,7 +14,7 @@ import com.devrachit.groww.utility.composeUtility.sdp
 @Composable
 fun WatchlistScreen(
     title: String,
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (ticker: String) -> Unit,
     onNavigationToDisplay: () -> Unit
 ) {
     Box(
@@ -30,7 +30,7 @@ fun WatchlistScreen(
         ){
             Text(text = title)
             Button(
-                onClick = {onNavigateToDetail()},
+                onClick = {},
                 modifier = Modifier.padding(top = 16.sdp),
                 enabled = true,
                 content = {

@@ -1172,6 +1172,14 @@
     <color name="bg_neutral">#1A1A1A</color>
     <color name="groww_green">#00F3BB</color>
     <color name="groww_purple">#5367FF</color>
+    <color name="chart_line_1">#00F7FF</color>  <!-- Bright Blue -->
+    <color name="chart_line_2">#FF0000</color>  <!-- Bright Red -->
+    <color name="chart_line_3">#CD00FF</color>  <!-- Bright Pink -->
+    <color name="chart_line_4">#EFD700</color>  <!-- Bright Yellow -->
+    <color name="chart_line_5">#26FF00</color>  <!-- Bright Orange -->
+<!-- Bright Orange -->
+    <!-- Bright Orange -->
+
     <!-- Primary & Notification -->
     <!--        <color name="white">#FF000000</color>-->
     <!--        <color name="black">#FFFFFFFF</color>-->

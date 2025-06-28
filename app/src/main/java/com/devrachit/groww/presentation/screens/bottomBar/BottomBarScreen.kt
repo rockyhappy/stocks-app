@@ -61,12 +61,13 @@ import com.devrachit.groww.utility.constants.Constants.Companion.START_DESTINATI
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.shadow
+import com.devrachit.groww.domain.models.DisplayPassData
 
 @Composable
 fun BottomBarScreen(
     title: String,
-    navigateToDetailsScreen: () -> Unit,
-    navigateToDisplayScreen: () -> Unit,
+    navigateToDetailsScreen: (ticker:String) -> Unit,
+    navigateToDisplayScreen: (passData: DisplayPassData) -> Unit,
     uiState: BottomBarScreenUiState,
     onThemeSelected: (ThemeMode) -> Unit
 ) {

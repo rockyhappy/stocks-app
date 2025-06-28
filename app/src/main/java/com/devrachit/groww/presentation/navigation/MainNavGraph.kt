@@ -1,5 +1,6 @@
 package com.devrachit.groww.presentation.navigation
 
+import android.util.Log
 import androidx.navigation.NavHost
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
@@ -20,6 +21,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.devrachit.groww.domain.models.DisplayPassData
 import com.devrachit.groww.presentation.screens.bottomBar.BottomBarScreen
 import com.devrachit.groww.presentation.screens.bottomBar.BottomBarScreenViewmodel
 import com.devrachit.groww.presentation.screens.details.DetailsScreen
@@ -42,10 +44,12 @@ fun MainNavGraph(
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             BottomBarScreen(
                 title = uiState.value.title,
-                navigateToDetailsScreen = {
+                navigateToDetailsScreen = { ticker :String ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("ticker", ticker)
                     navController.navigate(Screen.DetailsScreen.route)
                 },
-                navigateToDisplayScreen = {
+                navigateToDisplayScreen = { passData : DisplayPassData ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("passData", passData)
                     navController.navigate(Screen.DisplayScreen.route)
                 },
                 uiState = uiState.value,
@@ -55,18 +59,39 @@ fun MainNavGraph(
             )
         }
         mainAnimatedComposable(screen = Screen.DetailsScreen) {
+            val passData = remember {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.get<String>("ticker")
+            }
             val viewmodel = hiltViewModel<DetailsScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
+            val graphState =viewmodel.graphState.collectAsStateWithLifecycle()
+//            viewmodel.setTicker(passData?:"")
+            viewmodel.setTicker("IBM")
             DetailsScreen(
-                title = uiState.value.title,
+                title = passData?:uiState.value.title,
+                onRefresh = viewmodel::getCompanyDetails,
+                uiState=uiState.value,
+                graphState = graphState.value
             )
         }
-        mainAnimatedComposable(screen = Screen.DisplayScreen) {
+        mainAnimatedComposable(screen = Screen.DisplayScreen) { backStackEntry ->
+            val passData = remember {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.get<DisplayPassData>("passData")
+            }
+
             val viewmodel = hiltViewModel<DisplayScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
+            viewmodel.setListData(passData?.list?: emptyList())
             DisplayListScreen(
-                title = uiState.value.title,
-                navigateToDetailsScreen = {
+                uiState = uiState.value,
+                onRefresh = viewmodel::getTopGainersLosersActiveDriver,
+                title = passData?.title?:"Null Data",
+                navigateToDetailsScreen = {ticker :String->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("ticker", ticker)
                     navController.navigate(Screen.DetailsScreen.route)
                 }
             )

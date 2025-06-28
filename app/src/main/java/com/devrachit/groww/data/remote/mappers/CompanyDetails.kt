@@ -1,0 +1,61 @@
+package com.devrachit.groww.data.remote.mappers
+
+import com.devrachit.groww.data.remote.dto.CompanyDetailsDto
+import com.devrachit.groww.domain.models.CompanyDetails
+
+fun CompanyDetailsDto.toDomainModel(): CompanyDetails {
+    return CompanyDetails(
+        symbol = Symbol,
+        assetType = AssetType,
+        name = Name,
+        description = Description,
+        exchange = Exchange,
+        country = Country,
+        sector = Sector,
+        industry = Industry,
+        marketCapitalization = MarketCapitalization,
+        dividendDate = DividendDate,
+        currency = Currency,
+        cik = CIK,
+        dividendYield = DividendYield,
+        trailingPE = TrailingPE,
+        dividendPerShare = DividendPerShare,
+        address = Address,
+        officialSite = "", // Not present in DTO
+        fiscalYearEnd = FiscalYearEnd,
+        latestQuarter = LatestQuarter,
+        ebitda = EBITDA,
+        peRatio = PERatio,
+        pegRatio = PEGRatio,
+        bookValue = BookValue,
+        eps = EPS,
+        revenuePerShareTTM = RevenuePerShareTTM,
+        profitMargin = ProfitMargin,
+        operatingMarginTTM = OperatingMarginTTM,
+        returnOnAssetsTTM = ReturnOnAssetsTTM,
+        returnOnEquityTTM = ReturnOnEquityTTM,
+        revenueTTM = RevenueTTM,
+        grossProfitTTM = GrossProfitTTM,
+        dilutedEPSTTM = DilutedEPSTTM,
+        quarterlyEarningsGrowthYOY = QuarterlyEarningsGrowthYOY,
+        quarterlyRevenueGrowthYOY = QuarterlyRevenueGrowthYOY,
+        analystTargetPrice = AnalystTargetPrice,
+        analystRatingStrongBuy = AnalystRatingStrongBuy,
+        analystRatingBuy = AnalystRatingBuy,
+        analystRatingHold = AnalystRatingHold,
+        analystRatingSell = AnalystRatingSell,
+        analystRatingStrongSell = AnalystRatingStrongSell,
+        forwardPE = ForwardPE,
+        priceToSalesRatioTTM = PriceToSalesRatioTTM,
+        priceToBookRatio = PriceToBookRatio,
+        evToRevenue = EVToRevenue,
+        evToEBITDA = EVToEBITDA,
+        beta = Beta,
+        weekHigh52 = `52WeekHigh`,
+        weekLow52 = `52WeekLow`,
+        movingAverage50Day = `50DayMovingAverage`,
+        movingAverage200Day = `200DayMovingAverage`,
+        sharesOutstanding = SharesOutstanding,
+        exDividendDate = ExDividendDate
+    )
+}

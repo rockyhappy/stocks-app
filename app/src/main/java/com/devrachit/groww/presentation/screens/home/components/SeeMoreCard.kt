@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -62,8 +63,8 @@ fun SeeMoreCard(
                 verticalAlignment = Alignment.CenterVertically
             )
             {
-                Logo(name = title1)
-                Logo(name = title2)
+                Logo(name = title1, modifier = Modifier.size(30.sdp))
+                Logo(name = title2, modifier = Modifier.size(30.sdp))
             }
 
             Row(
@@ -73,8 +74,8 @@ fun SeeMoreCard(
                 verticalAlignment = Alignment.CenterVertically
             )
             {
-                Logo(name = title3)
-                Logo(name = title4)
+                Logo(name = title3, modifier = Modifier.size(30.sdp))
+                Logo(name = title4, modifier = Modifier.size(30.sdp))
             }
             Spacer(modifier = Modifier.weight(1f))
             Text(

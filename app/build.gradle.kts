@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -154,5 +155,5 @@ dependencies {
 //    implementation("com.google.firebase:firebase-config")
 //    implementation ("com.google.android.play:app-update:2.1.0")
 //    implementation ("com.google.android.play:app-update-ktx:2.1.0")
-//    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

@@ -67,7 +67,7 @@ fun StockItem(
                 .fillMaxWidth()
         ) {
             Logo(
-                modifier = Modifier.padding(start = 16.sdp, top = 16.sdp, bottom = 8.sdp),
+                modifier = Modifier.padding(start = 16.sdp, top = 16.sdp, bottom = 8.sdp).size(30.sdp),
                 name = stock.ticker
             )
 
