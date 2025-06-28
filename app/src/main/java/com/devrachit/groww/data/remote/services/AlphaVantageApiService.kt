@@ -14,19 +14,19 @@ interface AlphaVantageApiService {
 
     @GET("query?function=TOP_GAINERS_LOSERS")
     suspend fun getTopGainersLosers(
-        @Query("apikey") apiKey: String = API_KEY,
+        @Query("apikey") apiKey: String = "demo",
     ): TopGainersLosersActivesDto
 
     @GET("query?function=OVERVIEW")
     suspend fun getCompanyDetails(
         @Query("symbol") ticker: String,
-        @Query("apikey") apiKey: String = "demo",
+        @Query("apikey") apiKey: String = API_KEY,
     ): CompanyDetailsDto
 
     @GET("query?function=TIME_SERIES_INTRADAY")
     suspend fun getIntaDayPrices(
         @Query("symbol") ticker: String,
-        @Query("interval") interval: String = "5min",
+        @Query("interval") interval: String = "60min",
         @Query("apikey") apiKey: String = API_KEY,
     ): IntraDayGraphDto
 

@@ -67,8 +67,8 @@ fun MainNavGraph(
             val viewmodel = hiltViewModel<DetailsScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             val graphState =viewmodel.graphState.collectAsStateWithLifecycle()
-//            viewmodel.setTicker(passData?:"")
-            viewmodel.setTicker("IBM")
+            viewmodel.setTicker(passData?:"")
+//            viewmodel.setTicker("IBM")
             DetailsScreen(
                 title = passData?:uiState.value.title,
                 onRefresh = viewmodel::getCompanyDetails,

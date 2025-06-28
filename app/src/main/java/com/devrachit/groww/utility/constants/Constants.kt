@@ -12,10 +12,11 @@ class Constants {
         const val START_DESTINATION_INNER_NAV = HOME_ROUTE
         const val ANIMATION_DURATION = 300
         const val  APP_TITLE = "Stocks App"
+        const val API_KEY="GL4IYHYDQTU40DNS"
 //        const val API_KEY="TW6MN1A8V56SG5M4"
 //        const val API_KEY="BFT8Z08IP3V085Y9"
 //        const val API_KEY = "CWM5EGLE634DF0JM"
-        const val API_KEY = "demo"
+//        const val API_KEY = "demo"
 //        const val API_KEY = "QZ9P7NPXFKJUR04F"
 //        const val API_KEY = "NJKPXW44YH4UZTVC"
         const val CACHE_SIZE = (5 * 1024 * 1024).toLong()
