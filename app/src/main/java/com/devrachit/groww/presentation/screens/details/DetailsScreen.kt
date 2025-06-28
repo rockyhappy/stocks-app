@@ -77,7 +77,8 @@ fun DetailsScreen(
     title: String,
     onRefresh: () -> Unit,
     uiState: DetailsScreenUiState,
-    graphState: GraphState
+    graphState: GraphState,
+    onGraphTypeChange: (GraphType) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -140,7 +141,8 @@ fun DetailsScreen(
                     
                     StockChart(
                         graphState = graphState,
-                        isLoading = uiState.isLoading
+                        isLoading = graphState.isLoading,
+                        onGraphTypeChange= onGraphTypeChange
                     )
                     
                     ExpandableContainer(
