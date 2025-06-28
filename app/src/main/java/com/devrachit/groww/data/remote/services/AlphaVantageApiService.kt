@@ -17,7 +17,7 @@ interface AlphaVantageApiService {
     @GET("query?function=OVERVIEW")
     suspend fun getCompanyDetails(
         @Query("symbol") ticker: String,
-        @Query("apikey") apiKey: String = API_KEY,
+        @Query("apikey") apiKey: String = "demo",
     ): CompanyDetailsDto
 
     @GET("query?function=TIME_SERIES_INTRADAY")
