@@ -41,6 +41,7 @@ fun WeekRangeIndicator(
     Row(
         modifier = Modifier
             .padding(10.sdp)
+
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -55,7 +56,7 @@ fun WeekRangeIndicator(
         )
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.6f)
+                .weight(1f)
                 .height(60.sdp)
         ) {
             Text(

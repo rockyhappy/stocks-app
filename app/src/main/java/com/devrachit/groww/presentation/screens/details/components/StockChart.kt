@@ -57,24 +57,21 @@ fun StockChart(
                             setScaleEnabled(true)
                             setPinchZoom(true)
                             setDrawGridBackground(false)
-                            
-                            // Setup X-axis
+
                             xAxis.apply {
                                 position = XAxis.XAxisPosition.BOTTOM
                                 setDrawGridLines(false)
                                 granularity = 1f
                                 isGranularityEnabled = true
                             }
-                            
-                            // Setup Y-axis
+
                             axisLeft.apply {
                                 setDrawGridLines(true)
                                 gridColor = ContextCompat.getColor(context, R.color.black)
                                 gridLineWidth = 0.5f
                             }
                             axisRight.isEnabled = false
-                            
-                            // Setup legend
+
                             legend.apply {
                                 isEnabled = true
                                 textColor = ContextCompat.getColor(context, R.color.black)
@@ -84,22 +81,27 @@ fun StockChart(
                     update = { chart ->
                         val sortedData = graphState.data.toList().sortedBy { it.first }
                         val timestamps = sortedData.map { it.first }
-                        
+
                         val openEntries = mutableListOf<Entry>()
                         val highEntries = mutableListOf<Entry>()
                         val lowEntries = mutableListOf<Entry>()
                         val closeEntries = mutableListOf<Entry>()
                         val volumeEntries = mutableListOf<Entry>()
-                        
+
                         sortedData.forEachIndexed { index, (_, ohlcvData) ->
                             val x = index.toFloat()
                             openEntries.add(Entry(x, ohlcvData.open.toFloatOrNull() ?: 0f))
                             highEntries.add(Entry(x, ohlcvData.high.toFloatOrNull() ?: 0f))
                             lowEntries.add(Entry(x, ohlcvData.low.toFloatOrNull() ?: 0f))
                             closeEntries.add(Entry(x, ohlcvData.close.toFloatOrNull() ?: 0f))
-                            volumeEntries.add(Entry(x, (ohlcvData.volume.toFloatOrNull() ?: 0f) / 1000f))
+                            volumeEntries.add(
+                                Entry(
+                                    x,
+                                    (ohlcvData.volume.toFloatOrNull() ?: 0f) / 1000f
+                                )
+                            )
                         }
-                        
+
                         val chartLine1 = ContextCompat.getColor(chart.context, R.color.chart_line_1)
                         val chartLine2 = ContextCompat.getColor(chart.context, R.color.chart_line_2)
                         val chartLine3 = ContextCompat.getColor(chart.context, R.color.chart_line_3)
@@ -115,7 +117,7 @@ fun StockChart(
                             valueTextColor = ContextCompat.getColor(chart.context, R.color.black)
                             setDrawValues(false)
                         }
-                        
+
                         val highDataSet = LineDataSet(highEntries, "High").apply {
                             color = chartLine2
                             setCircleColor(chartLine2)
@@ -125,7 +127,7 @@ fun StockChart(
                             valueTextColor = ContextCompat.getColor(chart.context, R.color.black)
                             setDrawValues(false)
                         }
-                        
+
                         val lowDataSet = LineDataSet(lowEntries, "Low").apply {
                             color = chartLine3
                             setCircleColor(chartLine3)
@@ -135,7 +137,7 @@ fun StockChart(
                             valueTextColor = ContextCompat.getColor(chart.context, R.color.black)
                             setDrawValues(false)
                         }
-                        
+
                         val closeDataSet = LineDataSet(closeEntries, "Close").apply {
                             color = chartLine4
                             setCircleColor(chartLine4)
@@ -145,7 +147,7 @@ fun StockChart(
                             valueTextColor = ContextCompat.getColor(chart.context, R.color.black)
                             setDrawValues(false)
                         }
-                        
+
                         val volumeDataSet = LineDataSet(volumeEntries, "Volume(K)").apply {
                             color = chartLine5
                             setCircleColor(chartLine5)
@@ -155,25 +157,42 @@ fun StockChart(
                             valueTextColor = ContextCompat.getColor(chart.context, R.color.black)
                             setDrawValues(false)
                         }
-                        
-                        val lineData = LineData(openDataSet, highDataSet, lowDataSet, closeDataSet, volumeDataSet)
+
+                        val lineData = LineData(
+                            openDataSet,
+                            highDataSet,
+                            lowDataSet,
+                            closeDataSet,
+                            volumeDataSet
+                        )
                         chart.data = lineData
-                        
-                        // Format X-axis labels with timestamps
-                        chart.xAxis.valueFormatter = IndexAxisValueFormatter(timestamps.map { timestamp ->
-                            try {
-                                val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-                                sdf.format(java.util.Date(timestamp.toLong() * 1000))
-                            } catch (e: Exception) {
-                                timestamp
-                            }
-                        })
-                        
+
+
+                        chart.xAxis.textSize=5f
+                        chart.xAxis.valueFormatter =
+                            IndexAxisValueFormatter(timestamps.map { timestamp ->
+                                try {
+                                    val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+                                    sdf.format(java.util.Date(timestamp.toLong() * 1000))
+                                } catch (e: Exception) {
+                                    timestamp
+                                }
+                            })
+                        chart.xAxis.textColor = ContextCompat.getColor(chart.context, R.color.black)
+                        chart.xAxis.labelRotationAngle = -45f // Makes the x-axis labels vertical
+                        chart.axisLeft.textColor = ContextCompat.getColor(
+                            chart.context,
+                            R.color.black
+                        ) // Sets y-axis label color
+
                         chart.invalidate()
                     },
-                    modifier = Modifier.fillMaxSize().padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
                 )
             }
+
             isLoading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -186,6 +205,7 @@ fun StockChart(
                     )
                 }
             }
+
             else -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
