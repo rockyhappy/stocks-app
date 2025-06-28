@@ -15,13 +15,14 @@ data class DetailsScreenUiState(
 
 data class GraphState(
     val data : Map<String, OhlcvData> = emptyMap(),
-    val graphType: GraphType = GraphType.DAY,
+    val graphType: GraphType = GraphType.INTRA_DAY,
+    val isLoading: Boolean = false,
+    val error: String? = null
 )
 
 enum class GraphType {
-    DAY,
-    WEEK,
-    MONTH,
-    SIX_MONTH,
-    YEAR,
+    INTRA_DAY,
+    DAILY,
+    WEEKLY,
+    MONTHLY
 }

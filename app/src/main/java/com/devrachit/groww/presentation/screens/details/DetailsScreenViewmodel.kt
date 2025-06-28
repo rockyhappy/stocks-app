@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsScreenViewmodel @Inject constructor(
-    private val GetCompanyDetailsUsecase : GetCompanyDetails,
+    private val GetCompanyDetailsUsecase: GetCompanyDetails,
     private val getIntraDayOhlcvData: GetIntraDayGraphData,
     private val getDailyGraphData: GetDailyGraphData,
     private val getMonthlyGraphData: GetMonthlyGraphData,
@@ -29,12 +29,12 @@ class DetailsScreenViewmodel @Inject constructor(
 
 
     private val _uiState = MutableStateFlow(DetailsScreenUiState())
-    val uiState : StateFlow<DetailsScreenUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<DetailsScreenUiState> = _uiState.asStateFlow()
 
     private val _graphState = MutableStateFlow(GraphState())
-    val graphState : StateFlow<GraphState> = _graphState.asStateFlow()
+    val graphState: StateFlow<GraphState> = _graphState.asStateFlow()
 
-    init{
+    init {
 //        getCompanyDetails()
     }
 
@@ -42,15 +42,38 @@ class DetailsScreenViewmodel @Inject constructor(
         _uiState.update { it.copy(ticker = ticker) }
 
     }
+
     fun getCompanyDetails() {
         val coroutineScope = viewModelScope
         coroutineScope.launch(Dispatchers.IO) {
             getCompanyInfo(ticker = _uiState.value.ticker)
         }
         coroutineScope.launch(Dispatchers.IO) {
-            getIntraDayGraphData(ticker = _uiState.value.ticker)
+            when (_graphState.value.graphType) {
+                GraphType.INTRA_DAY -> getIntraDayGraphData(ticker = _uiState.value.ticker)
+                GraphType.DAILY -> getDailyOhlcvData(ticker = _uiState.value.ticker)
+                GraphType.WEEKLY -> getWeeklyOhlcvData(ticker = _uiState.value.ticker)
+                GraphType.MONTHLY -> getMonthlyOhlcvData(ticker = _uiState.value.ticker)
+            }
         }
     }
+
+    fun setGraphType(graphType: GraphType) {
+        _graphState.update { it.copy(graphType = graphType) }
+        getGraphData()
+    }
+
+    fun getGraphData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (_graphState.value.graphType) {
+                GraphType.INTRA_DAY -> getIntraDayGraphData(ticker = _uiState.value.ticker)
+                GraphType.DAILY -> getDailyOhlcvData(ticker = _uiState.value.ticker)
+                GraphType.WEEKLY -> getWeeklyOhlcvData(ticker = _uiState.value.ticker)
+                GraphType.MONTHLY -> getMonthlyOhlcvData(ticker = _uiState.value.ticker)
+            }
+        }
+    }
+
     private suspend fun getCompanyInfo(ticker: String) {
         GetCompanyDetailsUsecase.invoke(ticker).collectLatest { response ->
             when (response) {
@@ -76,21 +99,22 @@ class DetailsScreenViewmodel @Inject constructor(
             }
         }
     }
+
     private suspend fun getIntraDayGraphData(ticker: String) {
         getIntraDayOhlcvData.invoke(ticker).collectLatest { response ->
             when (response) {
                 is Resource.Loading -> {
-                    _uiState.update { it.copy(isLoading = true) }
+                    _graphState.update { it.copy(isLoading = true) }
                 }
 
                 is Resource.Error -> {
-                    _uiState.update {
+                    _graphState.update {
                         it.copy(isLoading = false, error = response.message)
                     }
                 }
 
                 is Resource.Success -> {
-                    _uiState.update {
+                    _graphState.update {
                         it.copy(
                             isLoading = false,
                             error = null
@@ -106,21 +130,22 @@ class DetailsScreenViewmodel @Inject constructor(
             }
         }
     }
+
     private suspend fun getDailyOhlcvData(ticker: String) {
         getDailyGraphData.invoke(ticker).collectLatest { response ->
             when (response) {
                 is Resource.Loading -> {
-                    _uiState.update { it.copy(isLoading = true) }
+                    _graphState.update { it.copy(isLoading = true) }
                 }
 
                 is Resource.Error -> {
-                    _uiState.update {
+                    _graphState.update {
                         it.copy(isLoading = false, error = response.message)
                     }
                 }
 
                 is Resource.Success -> {
-                    _uiState.update {
+                    _graphState.update {
                         it.copy(
                             isLoading = false,
                             error = null
@@ -136,21 +161,22 @@ class DetailsScreenViewmodel @Inject constructor(
             }
         }
     }
+
     private suspend fun getWeeklyOhlcvData(ticker: String) {
         getWeeklyGraphData.invoke(ticker).collectLatest { response ->
             when (response) {
                 is Resource.Loading -> {
-                    _uiState.update { it.copy(isLoading = true) }
+                    _graphState.update { it.copy(isLoading = true) }
                 }
 
                 is Resource.Error -> {
-                    _uiState.update {
+                    _graphState.update {
                         it.copy(isLoading = false, error = response.message)
                     }
                 }
 
                 is Resource.Success -> {
-                    _uiState.update {
+                    _graphState.update {
                         it.copy(
                             isLoading = false,
                             error = null
@@ -166,21 +192,22 @@ class DetailsScreenViewmodel @Inject constructor(
             }
         }
     }
+
     private suspend fun getMonthlyOhlcvData(ticker: String) {
-        getIntraDayOhlcvData.invoke(ticker).collectLatest { response ->
+        getMonthlyGraphData.invoke(ticker).collectLatest { response ->
             when (response) {
                 is Resource.Loading -> {
-                    _uiState.update { it.copy(isLoading = true) }
+                    _graphState.update { it.copy(isLoading = true) }
                 }
 
                 is Resource.Error -> {
-                    _uiState.update {
+                    _graphState.update {
                         it.copy(isLoading = false, error = response.message)
                     }
                 }
 
                 is Resource.Success -> {
-                    _uiState.update {
+                    _graphState.update {
                         it.copy(
                             isLoading = false,
                             error = null

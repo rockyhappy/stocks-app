@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -33,8 +35,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.devrachit.groww.R
 import com.devrachit.groww.presentation.screens.details.GraphState
+import com.devrachit.groww.presentation.screens.details.GraphType
 import com.devrachit.groww.ui.theme.TextStyleInter12Lh16Fw500
 import com.devrachit.groww.ui.theme.TextStyleInter14Lh20Fw600
+import com.devrachit.groww.ui.theme.TextStyleInter16Lh24Fw600
+import com.devrachit.groww.ui.theme.TextStyleInter18Lh24Fw700
 import com.devrachit.groww.utility.composeUtility.sdp
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -48,7 +53,8 @@ import java.util.*
 @Composable
 fun StockChart(
     graphState: GraphState,
-    isLoading: Boolean
+    isLoading: Boolean,
+    onGraphTypeChange: (GraphType) -> Unit
 ) {
     var selectedDataType by remember { mutableStateOf(ChartDataType.OPEN) }
     
@@ -70,17 +76,19 @@ fun StockChart(
         }
         
         // Chart
-        Box(
+        Column(
             modifier = Modifier
                 .padding(vertical = 8.sdp, horizontal = 16.sdp)
                 .fillMaxWidth()
-                .height(400.sdp)
+                .height(500.sdp)
                 .border(
                     border = BorderStroke(
                         width = 1.sdp,
                         color = colorResource(R.color.black).copy(alpha = 0.2f)
                     ), shape = RoundedCornerShape(16.sdp)
-                )
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
             when {
                 !isLoading && graphState.data.isNotEmpty() -> {
@@ -162,9 +170,12 @@ fun StockChart(
                             chart.invalidate()
                         },
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .height(400.dp)
                             .padding(8.dp)
                     )
+
+
                 }
 
                 isLoading -> {
@@ -192,6 +203,46 @@ fun StockChart(
                         )
                     }
                 }
+
+            }
+            Row(
+                modifier = Modifier.padding(top=20.sdp).wrapContentHeight().wrapContentHeight()
+                    .border(
+                        border = BorderStroke(
+                            width = 1.sdp,
+                            color = colorResource(R.color.black).copy(alpha = 0.2f)
+                        ), shape = RoundedCornerShape(16.sdp)
+                    ),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            )
+            {
+                Text(
+                    text = "ID",
+                    color = colorResource(R.color.black),
+                    style = if(graphState.graphType==GraphType.INTRA_DAY) TextStyleInter18Lh24Fw700() else TextStyleInter14Lh20Fw600(),
+                    modifier = Modifier.padding(vertical =8.dp,horizontal =12.dp).clickable { onGraphTypeChange(GraphType.INTRA_DAY)}
+                )
+                Text(
+                    text = "W",
+                    color = colorResource(R.color.black),
+                    style = if(graphState.graphType==GraphType.DAILY) TextStyleInter18Lh24Fw700() else TextStyleInter14Lh20Fw600(),
+                    modifier = Modifier.padding(vertical =8.dp,horizontal =12.dp).clickable { onGraphTypeChange(GraphType.DAILY)}
+                )
+                Text(
+                    text = "D",
+                    color = colorResource(R.color.black),
+                    style = if(graphState.graphType==GraphType.WEEKLY) TextStyleInter18Lh24Fw700() else TextStyleInter14Lh20Fw600(),
+                    modifier = Modifier.padding(vertical =8.dp,horizontal =12.dp).clickable { onGraphTypeChange(GraphType.WEEKLY)}
+                )
+                Text(
+                    text = "M",
+                    color = colorResource(R.color.black),
+                    style = if(graphState.graphType==GraphType.MONTHLY) TextStyleInter18Lh24Fw700() else TextStyleInter14Lh20Fw600(),
+                    modifier = Modifier.padding(vertical =8.dp,horizontal =12.dp).clickable { onGraphTypeChange(GraphType.MONTHLY)}
+                )
+
+
             }
         }
     }

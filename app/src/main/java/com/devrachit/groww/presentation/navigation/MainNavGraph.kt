@@ -73,7 +73,8 @@ fun MainNavGraph(
                 title = passData?:uiState.value.title,
                 onRefresh = viewmodel::getCompanyDetails,
                 uiState=uiState.value,
-                graphState = graphState.value
+                graphState = graphState.value,
+                onGraphTypeChange = viewmodel::setGraphType
             )
         }
         mainAnimatedComposable(screen = Screen.DisplayScreen) { backStackEntry ->
