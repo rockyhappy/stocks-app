@@ -77,6 +77,7 @@ fun HomeScreen(
                Text(
                    text = API_KEY_FAILURE,
                    style = TextStyleInter20Lh24Fw600(),
+                   color = colorResource(R.color.black),
                    modifier = Modifier.padding(16.sdp)
                )
            }

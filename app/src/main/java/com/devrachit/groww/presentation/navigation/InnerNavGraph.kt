@@ -58,9 +58,14 @@ fun NavGraph(
             val viewmodel = hiltViewModel<WatchlistScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle().value
             WatchlistScreen(
+                uiState=uiState,
                 title = uiState.title,
                 onNavigationToDisplay = {},
-                onNavigateToDetail = onNavigateToDetail
+                onNavigateToDetail = onNavigateToDetail,
+                onRefresh = viewmodel::onRefresh,
+                onWatchlistEntry = viewmodel::onWatchlistEntryChanged,
+                addWatchlist = viewmodel::addWatchlist,
+                deleteWatchlist = viewmodel::deleteWatchlist
             )
         }
     }
