@@ -1,12 +1,20 @@
 
 buildscript {
     repositories {
+        maven("https://jitpack.io")
         google()
         mavenCentral()
-        maven("https://jitpack.io")
+
     }
 
 }
+//allprojects{
+//    repositories {
+//        maven("https://jitpack.io")
+//        google()
+//        mavenCentral()
+//    }
+//}
 // Add this plugins repository block
 
 

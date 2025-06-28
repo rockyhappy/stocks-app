@@ -66,12 +66,14 @@ fun MainNavGraph(
             }
             val viewmodel = hiltViewModel<DetailsScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
+            val graphState =viewmodel.graphState.collectAsStateWithLifecycle()
 //            viewmodel.setTicker(passData?:"")
             viewmodel.setTicker("IBM")
             DetailsScreen(
                 title = passData?:uiState.value.title,
                 onRefresh = viewmodel::getCompanyDetails,
-                uiState=uiState.value
+                uiState=uiState.value,
+                graphState = graphState.value
             )
         }
         mainAnimatedComposable(screen = Screen.DisplayScreen) { backStackEntry ->

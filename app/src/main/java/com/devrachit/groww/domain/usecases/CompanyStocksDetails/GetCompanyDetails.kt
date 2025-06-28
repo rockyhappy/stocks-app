@@ -1,4 +1,4 @@
-package com.devrachit.groww.domain.usecases.CompanyDetails
+package com.devrachit.groww.domain.usecases.CompanyStocksDetails
 
 import com.devrachit.groww.data.remote.mappers.toDomainModel
 import com.devrachit.groww.domain.models.CompanyDetails
