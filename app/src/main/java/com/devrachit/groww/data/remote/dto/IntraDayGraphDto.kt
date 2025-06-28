@@ -6,7 +6,7 @@ data class IntraDayGraphDto(
     @SerializedName("Meta Data")
     val metaData: MetaData,
 
-    @SerializedName("Time Series (60min)")
+    @SerializedName("Time Series (5min)")
     val timeSeries: Map<String, OhlcvDataDto>
 )
 
