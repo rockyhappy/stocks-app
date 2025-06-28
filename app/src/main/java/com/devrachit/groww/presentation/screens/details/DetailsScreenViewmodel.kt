@@ -2,11 +2,17 @@ package com.devrachit.groww.presentation.screens.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.devrachit.groww.data.local.entity.WatchlistEntity
+import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetCompanyDetails
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetDailyGraphData
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetIntraDayGraphData
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetMonthlyGraphData
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetWeeklyGraphData
+import com.devrachit.groww.domain.usecases.watchlistDetails.AddWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.DeleteWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.GetAllWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.isStockInWatchList
 import com.devrachit.groww.utility.networkUtility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +30,11 @@ class DetailsScreenViewmodel @Inject constructor(
     private val getIntraDayOhlcvData: GetIntraDayGraphData,
     private val getDailyGraphData: GetDailyGraphData,
     private val getMonthlyGraphData: GetMonthlyGraphData,
-    private val getWeeklyGraphData: GetWeeklyGraphData
+    private val getWeeklyGraphData: GetWeeklyGraphData,
+    private val getWatchlist: GetAllWatchlist,
+    private val addWatchlist: AddWatchlist,
+    private val deleteWatchlist: DeleteWatchlist,
+    private val isStockInWatchlist: isStockInWatchList
 ) : ViewModel() {
 
 
@@ -43,6 +53,31 @@ class DetailsScreenViewmodel @Inject constructor(
 
     }
 
+    fun setStock(stock:Stock)
+    {
+        _uiState.update { it.copy(stock = stock) }
+        isStockInWatchlist(ticker =_uiState.value.stock?.ticker ?: _uiState.value.ticker)
+    }
+    private fun isStockInWatchlist(ticker: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            isStockInWatchlist.invoke(ticker).collectLatest {
+                when (it) {
+                    is Resource.Loading -> {
+
+                    }
+                    is Resource.Success -> {
+                        if(it.data!=null && it.data.isNotEmpty())
+                        {
+                            _uiState.update { it.copy(isBookmarkAdded = true) }
+                        }
+                    }
+                    is Resource.Error -> {
+
+                    }
+                }
+            }
+        }
+    }
     fun getCompanyDetails() {
         val coroutineScope = viewModelScope
         coroutineScope.launch(Dispatchers.IO) {

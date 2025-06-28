@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.devrachit.groww.domain.models.DisplayPassData
+import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.presentation.screens.bottomBar.BottomBarScreen
 import com.devrachit.groww.presentation.screens.bottomBar.BottomBarScreenViewmodel
 import com.devrachit.groww.presentation.screens.details.DetailsScreen
@@ -44,8 +45,8 @@ fun MainNavGraph(
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             BottomBarScreen(
                 title = uiState.value.title,
-                navigateToDetailsScreen = { ticker :String ->
-                    navController.currentBackStackEntry?.savedStateHandle?.set("ticker", ticker)
+                navigateToDetailsScreen = { stock :Stock ->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("ticker", stock)
                     navController.navigate(Screen.DetailsScreen.route)
                 },
                 navigateToDisplayScreen = { passData : DisplayPassData ->
@@ -62,15 +63,16 @@ fun MainNavGraph(
             val passData = remember {
                 navController.previousBackStackEntry
                     ?.savedStateHandle
-                    ?.get<String>("ticker")
+                    ?.get<Stock>("ticker")
             }
             val viewmodel = hiltViewModel<DetailsScreenViewmodel>()
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             val graphState =viewmodel.graphState.collectAsStateWithLifecycle()
-            viewmodel.setTicker(passData?:"")
-//            viewmodel.setTicker("IBM")
+            viewmodel.setTicker(passData?.ticker?:"")
+            viewmodel.setStock(passData?:Stock("","","","",""))
+            viewmodel.setTicker("IBM")
             DetailsScreen(
-                title = passData?:uiState.value.title,
+                title = passData?.ticker?:uiState.value.title,
                 onRefresh = viewmodel::getCompanyDetails,
                 uiState=uiState.value,
                 graphState = graphState.value,
@@ -91,8 +93,8 @@ fun MainNavGraph(
                 uiState = uiState.value,
                 onRefresh = viewmodel::getTopGainersLosersActiveDriver,
                 title = passData?.title?:"Null Data",
-                navigateToDetailsScreen = {ticker :String->
-                    navController.currentBackStackEntry?.savedStateHandle?.set("ticker", ticker)
+                navigateToDetailsScreen = {stock: Stock->
+                    navController.currentBackStackEntry?.savedStateHandle?.set("ticker", stock)
                     navController.navigate(Screen.DetailsScreen.route)
                 }
             )

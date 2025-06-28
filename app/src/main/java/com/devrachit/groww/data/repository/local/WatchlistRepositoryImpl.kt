@@ -20,4 +20,9 @@ class WatchlistRepositoryImpl @Inject constructor(
     override suspend fun deleteWatchList(watchlistEntity: WatchlistEntity) {
         return watchlistDao.deleteWatchlist(watchlistEntity)
     }
+
+    override suspend fun isStockInWatchlist(symbol: String): List<WatchlistEntity> {
+        return watchlistDao.getStockWithWatchlists(symbol).watchlist
+    }
+
 }

@@ -29,6 +29,7 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -45,6 +46,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -86,7 +88,7 @@ fun DetailsScreen(
         refreshing = uiState.isLoading,
         onRefresh = onRefresh
     )
-    
+
     LaunchedEffect(Unit) {
         onRefresh()
     }
@@ -96,12 +98,24 @@ fun DetailsScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Row {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = title,
                             modifier = Modifier.padding(top = 16.sdp, start = 16.sdp),
                             color = colorResource(R.color.black),
                             style = TextStyleInter22Lh36Fw700()
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Icon(
+                            painter = if (uiState.isBookmarkAdded) painterResource(R.drawable.ic_bookmark_filled) else painterResource(
+                                R.drawable.ic_bookmark_outlined
+                            ),
+                            contentDescription = "Error",
+                            tint = colorResource(R.color.black),
+                            modifier = Modifier
+                                .padding(end = 16.sdp)
+                                .size(24.sdp)
+                                .clickable {}
                         )
                     }
                 },
@@ -133,45 +147,45 @@ fun DetailsScreen(
                         assetType = uiState.companyDetails.assetType,
                         exchange = uiState.companyDetails.exchange
                     )
-                    
+
                     PriceInfoSection(
                         analystTargetPrice = uiState.companyDetails.analystTargetPrice,
                         dividendYield = uiState.companyDetails.dividendYield
                     )
-                    
+
                     StockChart(
                         graphState = graphState,
                         isLoading = graphState.isLoading,
-                        onGraphTypeChange= onGraphTypeChange
+                        onGraphTypeChange = onGraphTypeChange
                     )
-                    
+
                     ExpandableContainer(
                         heading = "About ${uiState.companyDetails.symbol}",
                         description = uiState.companyDetails.description
                     )
-                    
+
                     SectorIndustrySection(
                         symbol = uiState.companyDetails.symbol,
                         industry = uiState.companyDetails.industry,
                         sector = uiState.companyDetails.sector
                     )
-                    
+
                     Divider(
                         color = colorResource(R.color.black).copy(alpha = 0.1f),
                         modifier = Modifier.padding(vertical = 10.sdp)
                     )
-                    
+
                     WeekRangeIndicator(
                         weekLow52 = uiState.companyDetails.weekLow52,
                         weekHigh52 = uiState.companyDetails.weekHigh52,
                         currentPrice = uiState.companyDetails.analystTargetPrice
                     )
-                    
+
                     Divider(
                         color = colorResource(R.color.black).copy(alpha = 0.1f),
                         modifier = Modifier.padding(vertical = 10.sdp)
                     )
-                    
+
                     FinancialMetricsSection(
                         marketCap = uiState.companyDetails.marketCapitalization,
                         peRatio = uiState.companyDetails.peRatio,

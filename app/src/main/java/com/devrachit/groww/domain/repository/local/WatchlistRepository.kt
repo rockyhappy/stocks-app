@@ -6,4 +6,5 @@ interface WatchlistRepository {
     suspend fun getWatchlist(): List<WatchlistEntity>
     suspend fun addWatchList(watchlistEntity: WatchlistEntity): Long
     suspend fun deleteWatchList(watchlistEntity: WatchlistEntity)
+    suspend fun isStockInWatchlist(symbol: String): List<WatchlistEntity>
 }

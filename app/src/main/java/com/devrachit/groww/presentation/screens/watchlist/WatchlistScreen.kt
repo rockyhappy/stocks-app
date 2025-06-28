@@ -42,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.devrachit.groww.R
 import com.devrachit.groww.data.local.entity.WatchlistEntity
+import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.ui.theme.TextStyleInter14Lh20Fw600
 import com.devrachit.groww.ui.theme.TextStyleInter18Lh24Fw700
 import com.devrachit.groww.ui.theme.TextStyleInter24Lh36Fw700
@@ -52,7 +53,7 @@ import com.devrachit.groww.utility.composeUtility.sdp
 fun WatchlistScreen(
     uiState: WatchlistScreenUiStates,
     title: String,
-    onNavigateToDetail: (ticker: String) -> Unit,
+    onNavigateToDetail: (stock: Stock) -> Unit,
     onNavigationToDisplay: () -> Unit,
     onRefresh: () -> Unit,
     onWatchlistEntry: (watchlistEntry: String) -> Unit,
@@ -210,7 +211,7 @@ fun WatchlistScreen(
 
                     ) {
                         Text(
-                            text = uiState.allWatchlist[index].name,
+                            text = uiState.allWatchlist[index].name + " (" + uiState.allWatchlist[index].count+")",
                             color = colorResource(R.color.black),
                             style = TextStyleInter14Lh20Fw600(),
                             modifier = Modifier.padding(16.sdp)

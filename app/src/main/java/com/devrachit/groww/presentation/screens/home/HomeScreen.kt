@@ -48,7 +48,7 @@ import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 fun HomeScreen(
     uiState: HomeScreenUiState,
     title: String,
-    onNavigateToDetail: (ticker: String) -> Unit,
+    onNavigateToDetail: (stock: Stock) -> Unit,
     onNavigationToDisplay: (type: StockType) -> Unit,
     onRefresh: () -> Unit
 ) {
