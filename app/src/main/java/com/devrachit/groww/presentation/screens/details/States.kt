@@ -1,5 +1,6 @@
 package com.devrachit.groww.presentation.screens.details
 
+import com.devrachit.groww.data.local.entity.WatchlistEntity
 import com.devrachit.groww.data.remote.dto.OhlcvDataDto
 import com.devrachit.groww.domain.models.CompanyDetails
 import com.devrachit.groww.domain.models.OhlcvData
@@ -13,7 +14,11 @@ data class DetailsScreenUiState(
     val companyDetails : CompanyDetails?= null,
     val isRefreshing: Boolean = false,
     val stock:Stock?= null,
-    val isBookmarkAdded : Boolean = false
+    val isBookmarkAdded : Boolean = false,
+    val watchlistEntry :String? = null,
+    val watchlistError :String? = null,
+    val isWatchlistError :Boolean = false,
+    val allWatchlist: List<WatchlistEntity> = emptyList(),
 )
 
 data class GraphState(

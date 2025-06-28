@@ -11,6 +11,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -34,6 +35,9 @@ fun WatchlistScreen(
     addWatchlist: (name: String) -> Unit,
     deleteWatchlist: (watchlistEntity: WatchlistEntity) -> Unit
 ) {
+    LaunchedEffect(Unit) {
+        onRefresh()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -48,6 +52,7 @@ fun WatchlistScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .pullRefresh(pullRefreshState)
                 .background(color = colorResource(R.color.white)),
         )
         {

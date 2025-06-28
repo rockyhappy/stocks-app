@@ -53,24 +53,35 @@ class DetailsScreenViewmodel @Inject constructor(
 
     }
 
-    fun setStock(stock:Stock)
-    {
-        _uiState.update { it.copy(stock = stock) }
-        isStockInWatchlist(ticker =_uiState.value.stock?.ticker ?: _uiState.value.ticker)
+    fun onWatchlistEntryChanged(watchlistName: String) {
+        _uiState.update {
+            it.copy(watchlistEntry = watchlistName)
+        }
     }
-    private fun isStockInWatchlist(ticker: String){
+
+    fun setStock(stock: Stock) {
+        _uiState.update { it.copy(stock = stock) }
+        isStockInWatchlist(ticker = _uiState.value.stock?.ticker ?: _uiState.value.ticker)
+        viewModelScope.launch(Dispatchers.IO) {
+            getAllWatchlist()
+        }
+
+    }
+
+    private fun isStockInWatchlist(ticker: String) {
         viewModelScope.launch(Dispatchers.IO) {
             isStockInWatchlist.invoke(ticker).collectLatest {
                 when (it) {
                     is Resource.Loading -> {
 
                     }
+
                     is Resource.Success -> {
-                        if(it.data!=null && it.data.isNotEmpty())
-                        {
+                        if (it.data != null && it.data.isNotEmpty()) {
                             _uiState.update { it.copy(isBookmarkAdded = true) }
                         }
                     }
+
                     is Resource.Error -> {
 
                     }
@@ -78,6 +89,7 @@ class DetailsScreenViewmodel @Inject constructor(
             }
         }
     }
+
     fun getCompanyDetails() {
         val coroutineScope = viewModelScope
         coroutineScope.launch(Dispatchers.IO) {
@@ -254,6 +266,80 @@ class DetailsScreenViewmodel @Inject constructor(
                         )
                     }
 
+                }
+            }
+        }
+    }
+
+    private suspend fun getAllWatchlist() {
+        getWatchlist.invoke().collectLatest { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _uiState.update {
+                        it.copy(isLoading = false, allWatchlist = result.data ?: emptyList())
+                    }
+                }
+
+                is Resource.Error -> {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = result.message ?: "An unexpected error occurred"
+                        )
+                    }
+                }
+
+                is Resource.Loading -> {
+                    _uiState.update {
+                        it.copy(isLoading = true)
+                    }
+                }
+            }
+        }
+    }
+
+    fun addWatchlist(watchlistName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = WatchlistEntity(
+                name = watchlistName,
+                count = 0
+            )
+            println(data)
+
+            addWatchlist.invoke(data).collectLatest { result ->
+                println(result)
+                when (result) {
+                    is Resource.Success -> {
+                        getAllWatchlist()
+                    }
+
+                    is Resource.Error -> {
+
+                    }
+
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun deleteWatchlist(watchlistEntity: WatchlistEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteWatchlist.invoke(watchlistEntity).collectLatest {
+                when (it) {
+                    is Resource.Success -> {
+                        getAllWatchlist()
+                    }
+
+                    is Resource.Error -> {
+
+                    }
+
+                    is Resource.Loading -> {
+
+                    }
                 }
             }
         }

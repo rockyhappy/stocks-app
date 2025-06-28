@@ -76,7 +76,10 @@ fun MainNavGraph(
                 onRefresh = viewmodel::getCompanyDetails,
                 uiState=uiState.value,
                 graphState = graphState.value,
-                onGraphTypeChange = viewmodel::setGraphType
+                onGraphTypeChange = viewmodel::setGraphType,
+                onWatchlistEntryChanged = viewmodel::onWatchlistEntryChanged,
+                addWatchlist = viewmodel::addWatchlist,
+                deleteWatchlist = viewmodel::deleteWatchlist
             )
         }
         mainAnimatedComposable(screen = Screen.DisplayScreen) { backStackEntry ->

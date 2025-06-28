@@ -30,12 +30,15 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -64,6 +67,8 @@ import com.devrachit.groww.utility.composeUtility.sdp
 import com.devrachit.groww.utility.constants.Constants.Companion.TOP_GAINERS
 import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 import com.devrachit.groww.R
+import com.devrachit.groww.data.local.entity.WatchlistEntity
+import com.devrachit.groww.presentation.screens.details.components.BottomSheetContent
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -80,10 +85,13 @@ fun DetailsScreen(
     onRefresh: () -> Unit,
     uiState: DetailsScreenUiState,
     graphState: GraphState,
-    onGraphTypeChange: (GraphType) -> Unit
+    onGraphTypeChange: (GraphType) -> Unit,
+    onWatchlistEntryChanged : (String) -> Unit,
+    addWatchlist : (String) -> Unit,
+    deleteWatchlist : (watchlistEntity: WatchlistEntity) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
+    var showBottomSheet = remember { mutableStateOf(false) }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = uiState.isLoading,
         onRefresh = onRefresh
@@ -115,7 +123,7 @@ fun DetailsScreen(
                             modifier = Modifier
                                 .padding(end = 16.sdp)
                                 .size(24.sdp)
-                                .clickable {}
+                                .clickable { showBottomSheet.value = true }
                         )
                     }
                 },
@@ -133,6 +141,18 @@ fun DetailsScreen(
                 .padding(paddingValues)
                 .background(color = colorResource(R.color.white))
         ) {
+            if (showBottomSheet.value)
+                ModalBottomSheet(onDismissRequest = {
+                    showBottomSheet.value = false
+                },
+                    containerColor = colorResource(R.color.card_elevated)) { BottomSheetContent(
+                    uiState=uiState,
+                    modifier=Modifier.fillMaxWidth(),
+                    onWatchlistEntryChanged=onWatchlistEntryChanged,
+                    addWatchlist = addWatchlist,
+                    deleteWatchlist = deleteWatchlist
+                ) }
+
             if (!uiState.isLoading && uiState.companyDetails != null) {
                 Column(
                     modifier = Modifier

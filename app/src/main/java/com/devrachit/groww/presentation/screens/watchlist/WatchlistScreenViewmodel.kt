@@ -33,7 +33,9 @@ class WatchlistScreenViewmodel @Inject constructor(
         }
     }
     fun onRefresh(){
-
+        viewModelScope.launch(Dispatchers.IO) {
+            getAllWatchlist()
+        }
     }
     fun onWatchlistEntryChanged(watchlistName: String) {
         _uiState.update {
