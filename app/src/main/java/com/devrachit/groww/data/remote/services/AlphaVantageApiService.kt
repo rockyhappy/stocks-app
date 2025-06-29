@@ -14,7 +14,7 @@ interface AlphaVantageApiService {
 
     @GET("query?function=TOP_GAINERS_LOSERS")
     suspend fun getTopGainersLosers(
-        @Query("apikey") apiKey: String = "demo",
+        @Query("apikey") apiKey: String = API_KEY,
     ): TopGainersLosersActivesDto
 
     @GET("query?function=OVERVIEW")
