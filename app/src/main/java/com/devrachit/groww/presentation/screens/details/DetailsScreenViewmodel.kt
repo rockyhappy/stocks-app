@@ -2,6 +2,7 @@ package com.devrachit.groww.presentation.screens.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.devrachit.groww.data.local.entity.StocksEntity
 import com.devrachit.groww.data.local.entity.WatchlistEntity
 import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetCompanyDetails
@@ -9,6 +10,7 @@ import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetDailyGraphDat
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetIntraDayGraphData
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetMonthlyGraphData
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetWeeklyGraphData
+import com.devrachit.groww.domain.usecases.watchlistDetails.AddStockToWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.AddWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.DeleteWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.GetAllWatchlist
@@ -34,7 +36,8 @@ class DetailsScreenViewmodel @Inject constructor(
     private val getWatchlist: GetAllWatchlist,
     private val addWatchlist: AddWatchlist,
     private val deleteWatchlist: DeleteWatchlist,
-    private val isStockInWatchlist: isStockInWatchList
+    private val isStockInWatchlist: isStockInWatchList,
+    private val AddStockToWatchlist: AddStockToWatchlist
 ) : ViewModel() {
 
 
@@ -343,6 +346,33 @@ class DetailsScreenViewmodel @Inject constructor(
 
                     }
 
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun addStockToWatchlist(watchlistEntity: WatchlistEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            AddStockToWatchlist.invoke(
+                stock = StocksEntity(
+                    ticker = _uiState.value.stock?.ticker ?: "",
+                    changeAmount = _uiState.value.stock?.changeAmount ?: "0.0",
+                    changePercentage = _uiState.value.stock?.changePercentage ?: "0.0",
+                    price = _uiState.value.stock?.price ?: "0.0",
+                    volume = _uiState.value.stock?.volume ?: "0.0"
+                ),
+                watchlistEntity = watchlistEntity
+            ).collectLatest {
+                when (it) {
+                    is Resource.Success -> {
+                        getAllWatchlist()
+                    }
+                    is Resource.Error -> {
+
+                    }
                     is Resource.Loading -> {
 
                     }

@@ -1,7 +1,9 @@
 package com.devrachit.groww.data.repository.local
 
 import com.devrachit.groww.data.local.dao.WatchlistDao
+import com.devrachit.groww.data.local.entity.StocksEntity
 import com.devrachit.groww.data.local.entity.WatchlistEntity
+import com.devrachit.groww.data.local.entity.WatchlistStockCrossRefEntity
 import com.devrachit.groww.domain.repository.local.WatchlistRepository
 import javax.inject.Inject
 
@@ -23,6 +25,19 @@ class WatchlistRepositoryImpl @Inject constructor(
 
     override suspend fun isStockInWatchlist(symbol: String): List<WatchlistEntity> {
         return watchlistDao.getStockWithWatchlists(symbol).watchlist
+    }
+
+    override suspend fun addStockToWatchlist(
+        stock: StocksEntity,
+        watchlistEntity: WatchlistEntity
+    ) {
+
+        watchlistDao.insertStock(stock = stock)
+        val crossRef = WatchlistStockCrossRefEntity(
+            watchlist_id = watchlistEntity.watchlist_id,
+            ticker = stock.ticker
+        )
+        watchlistDao.insertCrossRef(crossRef=crossRef)
     }
 
 }

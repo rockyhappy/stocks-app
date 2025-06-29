@@ -68,6 +68,7 @@ import com.devrachit.groww.utility.constants.Constants.Companion.TOP_GAINERS
 import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 import com.devrachit.groww.R
 import com.devrachit.groww.data.local.entity.WatchlistEntity
+import com.devrachit.groww.domain.usecases.watchlistDetails.AddStockToWatchlist
 import com.devrachit.groww.presentation.screens.details.components.BottomSheetContent
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -88,7 +89,8 @@ fun DetailsScreen(
     onGraphTypeChange: (GraphType) -> Unit,
     onWatchlistEntryChanged : (String) -> Unit,
     addWatchlist : (String) -> Unit,
-    deleteWatchlist : (watchlistEntity: WatchlistEntity) -> Unit
+    deleteWatchlist : (watchlistEntity: WatchlistEntity) -> Unit,
+    addStockToWatchlist: (watchlistEntity: WatchlistEntity)->Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     var showBottomSheet = remember { mutableStateOf(false) }
@@ -145,12 +147,14 @@ fun DetailsScreen(
                 ModalBottomSheet(onDismissRequest = {
                     showBottomSheet.value = false
                 },
-                    containerColor = colorResource(R.color.card_elevated)) { BottomSheetContent(
+                    containerColor = colorResource(R.color.card_elevated))
+                { BottomSheetContent(
                     uiState=uiState,
                     modifier=Modifier.fillMaxWidth(),
                     onWatchlistEntryChanged=onWatchlistEntryChanged,
                     addWatchlist = addWatchlist,
-                    deleteWatchlist = deleteWatchlist
+                    deleteWatchlist = deleteWatchlist,
+                    addStockToWatchlist = addStockToWatchlist
                 ) }
 
             if (!uiState.isLoading && uiState.companyDetails != null) {
