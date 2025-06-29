@@ -70,15 +70,21 @@ class DetailsScreenViewmodel @Inject constructor(
 
     private fun isStockInWatchlist(ticker: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            isStockInWatchlist.invoke(ticker).collectLatest {
-                when (it) {
+            isStockInWatchlist.invoke(ticker).collectLatest { result ->
+                when (result) {
                     is Resource.Loading -> {
 
                     }
 
                     is Resource.Success -> {
-                        if (it.data != null && it.data.isNotEmpty()) {
-                            _uiState.update { it.copy(isBookmarkAdded = true) }
+                        if (result.data != null && result.data.isNotEmpty()) {
+                            _uiState.update {
+                                it.copy(
+                                    isBookmarkAdded = true,
+                                    stockWatchlist = result.data
+                                )
+                            }
+
                         }
                     }
 

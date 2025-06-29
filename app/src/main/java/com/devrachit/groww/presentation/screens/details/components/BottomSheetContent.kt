@@ -38,10 +38,12 @@ fun BottomSheetContent(
             }
         }
         items(uiState.allWatchlist.size) { index ->
-            WatchlistItemCard(
+            CheckWatchlistItemCard(
                 watchlistEntity = uiState.allWatchlist[index],
                 deleteWatchlist = deleteWatchlist,
-                onWatchlistEntry = {}
+                onWatchlistEntry = {},
+                onCheckedChange = {},
+                isChecked = if(uiState.stockWatchlist.contains(uiState.allWatchlist[index])) true else false
             )
         }
     }

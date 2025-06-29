@@ -18,6 +18,7 @@ data class DetailsScreenUiState(
     val watchlistEntry :String? = null,
     val watchlistError :String? = null,
     val isWatchlistError :Boolean = false,
+    val stockWatchlist: List<WatchlistEntity> = emptyList(),
     val allWatchlist: List<WatchlistEntity> = emptyList(),
 )
 
