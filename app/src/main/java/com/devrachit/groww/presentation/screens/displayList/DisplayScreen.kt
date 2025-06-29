@@ -94,8 +94,8 @@ fun DisplayListScreen(
                         stockType = when (title) {
                             TOP_GAINERS -> StockType.Gainer()
                             TOP_LOSERS-> StockType.Loser()
+                            MOSTLY_TRADED -> StockType.Active()
                             else -> StockType.Active()
-
                         },
                         onCompanyClick = {navigateToDetailsScreen(uiState.data[index])}
                     )

@@ -27,7 +27,7 @@ fun EmptyWatchlistState() {
     )
     
     Text(
-        text = "No Data",
+        text = "No Watchlist",
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.sdp, start = 16.sdp),
