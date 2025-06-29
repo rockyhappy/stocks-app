@@ -11,4 +11,7 @@ interface WatchlistRepository {
     suspend fun addStockToWatchlist(stock: StocksEntity, watchlistEntity: WatchlistEntity)
     suspend fun deleteStockFromWatchlist(stock: StocksEntity, watchlistEntity: WatchlistEntity)
     suspend fun getStocksFromWatchlist(watchlistId: Int): List<StocksEntity>
+    suspend fun updateWatchlistCount(watchlistId: Int)
+    suspend fun getWatchlistStockCount(watchlistId: Int): Int
+    suspend fun updateAllWatchlistCounts()
 }

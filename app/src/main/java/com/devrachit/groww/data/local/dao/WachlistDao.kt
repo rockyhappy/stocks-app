@@ -37,6 +37,23 @@ interface WatchlistDao {
 
     @Query("DELETE FROM watchlist_stock_cross_ref WHERE watchlist_id = :watchlistId")
     suspend fun deleteAllStocksFromWatchlist(watchlistId: Int)
+
+    @Query("UPDATE watchlists SET count = :count WHERE watchlist_id = :watchlistId")
+    suspend fun updateWatchlistCount(watchlistId: Int, count: Int)
+
+    @Query("SELECT COUNT(*) FROM watchlist_stock_cross_ref WHERE watchlist_id = :watchlistId")
+    suspend fun getWatchlistStockCount(watchlistId: Int): Int
+
+    @Query("""
+        UPDATE watchlists 
+        SET count = (
+            SELECT COUNT(*) 
+            FROM watchlist_stock_cross_ref 
+            WHERE watchlist_stock_cross_ref.watchlist_id = watchlists.watchlist_id
+        )
+    """)
+    suspend fun updateAllWatchlistCounts()
+
     @Query("SELECT * FROM watchlists")
     suspend fun getAllWatchlists(): List<WatchlistEntity>
 

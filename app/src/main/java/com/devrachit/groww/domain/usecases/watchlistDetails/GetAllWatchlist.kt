@@ -13,7 +13,12 @@ class GetAllWatchlist @Inject constructor(
 ) {
     operator fun invoke() :Flow<Resource<List<WatchlistEntity>>> = flow {
         emit(Resource.Loading())
-        val result = safeApiCall { repository.getWatchlist() }
+        val result = safeApiCall { 
+            // Update counts for all watchlists in one query
+            repository.updateAllWatchlistCounts()
+            // Get the updated watchlists
+            repository.getWatchlist()
+        }
         when {
             result.data!= null -> emit(Resource.Success(result.data))
             else -> emit(Resource.Error(result.message ?: "Unknown error"))
