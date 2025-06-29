@@ -4,10 +4,12 @@ package com.devrachit.groww.presentation.screens.watchlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devrachit.groww.data.local.entity.WatchlistEntity
+import com.devrachit.groww.domain.models.DisplayPassData
 import com.devrachit.groww.domain.usecases.watchlistDetails.AddWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.DeleteWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.GetAllStocksFromWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.GetAllWatchlist
+import com.devrachit.groww.presentation.navigation.navigateToTab
 import com.devrachit.groww.utility.networkUtility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -115,14 +118,25 @@ class WatchlistScreenViewmodel @Inject constructor(
             }
         }
     }
-    fun getStocksFromWatchlist(watchlistEntity: WatchlistEntity) {
+    fun getStocksFromWatchlist(watchlistEntity: WatchlistEntity, navigateToDisplayScreen: (DisplayPassData) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             getAllStocksFromWatchlist.invoke(watchlistEntity.watchlist_id).collectLatest { result->
                 when (result) {
                     is Resource.Success -> {
+                        println(result.data)
                         _uiState.update {
                             it.copy(stocksListPass = result.data?:emptyList())
                         }
+                        
+                        val displayPassData = DisplayPassData(
+                            title = watchlistEntity.name,
+                            list = result.data ?: emptyList()
+                        )
+                        withContext(Dispatchers.Main) {
+                            navigateToDisplayScreen(displayPassData)
+                        }
+
+
                     }
                     is Resource.Error -> {
 

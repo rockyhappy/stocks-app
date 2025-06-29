@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import com.devrachit.groww.R
 import com.devrachit.groww.data.local.entity.WatchlistEntity
+import com.devrachit.groww.domain.models.DisplayPassData
 import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.presentation.screens.watchlist.components.EmptyWatchlistState
 import com.devrachit.groww.presentation.screens.watchlist.components.WatchlistEntryForm
@@ -29,7 +30,7 @@ fun WatchlistScreen(
     uiState: WatchlistScreenUiStates,
     title: String,
     onNavigateToDetail: (stock: Stock) -> Unit,
-    onNavigationToDisplay: () -> Unit,
+    onNavigationToDisplay: (passData: DisplayPassData) -> Unit,
     onRefresh: () -> Unit,
     onWatchlistEntry: (watchlistEntry: String) -> Unit,
     addWatchlist: (name: String) -> Unit,

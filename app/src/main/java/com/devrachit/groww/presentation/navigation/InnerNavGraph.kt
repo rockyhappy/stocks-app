@@ -61,13 +61,15 @@ fun NavGraph(
             WatchlistScreen(
                 uiState=uiState,
                 title = uiState.title,
-                onNavigationToDisplay = {},
+                onNavigationToDisplay = onNavigateToDisplay,
                 onNavigateToDetail = onNavigateToDetail,
                 onRefresh = viewmodel::onRefresh,
                 onWatchlistEntry = viewmodel::onWatchlistEntryChanged,
                 addWatchlist = viewmodel::addWatchlist,
                 deleteWatchlist = viewmodel::deleteWatchlist,
-                onCardClick = viewmodel::getStocksFromWatchlist
+                onCardClick = { watchlistEntity ->
+                    viewmodel.getStocksFromWatchlist(watchlistEntity, onNavigateToDisplay)
+                }
             )
         }
     }

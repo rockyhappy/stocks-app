@@ -60,7 +60,9 @@ class DetailsScreenViewmodel @Inject constructor(
 
     fun onWatchlistEntryChanged(watchlistName: String) {
         _uiState.update {
-            it.copy(watchlistEntry = watchlistName)
+            it.copy(
+                watchlistEntry = watchlistName
+            )
         }
     }
 
@@ -90,6 +92,13 @@ class DetailsScreenViewmodel @Inject constructor(
                                 )
                             }
 
+                        } else {
+                            _uiState.update {
+                                it.copy(
+                                    isBookmarkAdded = false,
+                                    stockWatchlist = emptyList()
+                                )
+                            }
                         }
                     }
 
@@ -141,7 +150,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _uiState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message
+                        )
                     }
                 }
 
@@ -167,7 +179,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _graphState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message
+                        )
                     }
                 }
 
@@ -198,7 +213,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _graphState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message
+                        )
                     }
                 }
 
@@ -229,7 +247,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _graphState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message
+                        )
                     }
                 }
 
@@ -260,7 +281,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _graphState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message ?: "An unexpected error occurred"
+                        )
                     }
                 }
 
@@ -342,6 +366,7 @@ class DetailsScreenViewmodel @Inject constructor(
                 when (it) {
                     is Resource.Success -> {
                         getAllWatchlist()
+                        isStockInWatchlist(ticker = _uiState.value.stock?.ticker ?: _uiState.value.ticker)
                     }
 
                     is Resource.Error -> {
@@ -371,6 +396,7 @@ class DetailsScreenViewmodel @Inject constructor(
                 when (it) {
                     is Resource.Success -> {
                         getAllWatchlist()
+                        isStockInWatchlist(ticker = _uiState.value.stock?.ticker ?: _uiState.value.ticker)
                     }
                     is Resource.Error -> {
 
@@ -382,6 +408,7 @@ class DetailsScreenViewmodel @Inject constructor(
             }
         }
     }
+
     fun deleteFromWatchlist(watchlistEntity: WatchlistEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteStockFromWatchlist.invoke(
@@ -397,6 +424,7 @@ class DetailsScreenViewmodel @Inject constructor(
                 when (it) {
                     is Resource.Success -> {
                         getAllWatchlist()
+                        isStockInWatchlist(ticker = _uiState.value.stock?.ticker ?: _uiState.value.ticker)
                     }
                     is Resource.Error -> {
 

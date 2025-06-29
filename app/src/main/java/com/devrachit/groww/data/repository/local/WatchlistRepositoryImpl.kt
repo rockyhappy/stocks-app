@@ -49,10 +49,10 @@ class WatchlistRepositoryImpl @Inject constructor(
             ticker = stock.ticker
         )
         watchlistDao.deleteCrossRef(crossRef)
-        val stockWithWatchlists = watchlistDao.getStockWithWatchlists(stock.ticker)
-        if (stockWithWatchlists.watchlist.isEmpty()) {
-            watchlistDao.deleteStock(stock)
-        }
+//        val stockWithWatchlists = watchlistDao.getStockWithWatchlists(stock.ticker)
+//        if (stockWithWatchlists.watchlist.isEmpty()) {
+//            watchlistDao.deleteStock(stock)
+//        }
 
     }
 
