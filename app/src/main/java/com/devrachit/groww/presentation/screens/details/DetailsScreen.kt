@@ -46,7 +46,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -62,6 +61,8 @@ import com.devrachit.groww.presentation.screens.details.components.PriceInfoSect
 import com.devrachit.groww.presentation.screens.details.components.SectorIndustrySection
 import com.devrachit.groww.presentation.screens.details.components.StockChart
 import com.devrachit.groww.presentation.screens.details.components.WeekRangeIndicator
+import com.devrachit.groww.presentation.screens.details.components.BottomSheetContent
+import com.devrachit.groww.presentation.screens.details.components.DetailsScreenShimmer
 import com.devrachit.groww.ui.theme.TextStyleInter22Lh36Fw700
 import com.devrachit.groww.utility.composeUtility.sdp
 import com.devrachit.groww.utility.constants.Constants.Companion.TOP_GAINERS
@@ -69,7 +70,6 @@ import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 import com.devrachit.groww.R
 import com.devrachit.groww.data.local.entity.WatchlistEntity
 import com.devrachit.groww.domain.usecases.watchlistDetails.AddStockToWatchlist
-import com.devrachit.groww.presentation.screens.details.components.BottomSheetContent
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -158,7 +158,6 @@ fun DetailsScreen(
                     addStockToWatchlist = addStockToWatchlist,
                     deleteStockFromWatchlist = deleteStockFromWatchlist
                 ) }
-
             if (!uiState.isLoading && uiState.companyDetails != null) {
                 Column(
                     modifier = Modifier
@@ -223,6 +222,9 @@ fun DetailsScreen(
                         returnOnEquity = uiState.companyDetails.returnOnEquityTTM
                     )
                 }
+            }
+            else{
+                DetailsScreenShimmer()
             }
 
             PullRefreshIndicator(
