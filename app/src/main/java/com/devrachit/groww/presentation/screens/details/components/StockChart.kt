@@ -224,13 +224,13 @@ fun StockChart(
                     modifier = Modifier.padding(vertical =8.dp,horizontal =12.dp).clickable { onGraphTypeChange(GraphType.INTRA_DAY)}
                 )
                 Text(
-                    text = "W",
+                    text = "D",
                     color = colorResource(R.color.black),
                     style = if(graphState.graphType==GraphType.DAILY) TextStyleInter18Lh24Fw700() else TextStyleInter14Lh20Fw600(),
                     modifier = Modifier.padding(vertical =8.dp,horizontal =12.dp).clickable { onGraphTypeChange(GraphType.DAILY)}
                 )
                 Text(
-                    text = "D",
+                    text = "W",
                     color = colorResource(R.color.black),
                     style = if(graphState.graphType==GraphType.WEEKLY) TextStyleInter18Lh24Fw700() else TextStyleInter14Lh20Fw600(),
                     modifier = Modifier.padding(vertical =8.dp,horizontal =12.dp).clickable { onGraphTypeChange(GraphType.WEEKLY)}

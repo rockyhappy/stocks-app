@@ -22,7 +22,7 @@ fun StockListSection(
     title: String,
     stockList: List<Stock>,
     isLoading: Boolean,
-    onStockClick: (ticker: String) -> Unit,
+    onStockClick: (stock:Stock) -> Unit,
     onNavigationToDisplay: () -> Unit
 ) {
     when {
@@ -44,13 +44,13 @@ fun StockListSection(
                     modifier = Modifier.weight(1f),
                     stock = stockList[0],
                     stockType = stockType,
-                    onCompanyClick = {onStockClick(stockList[0].ticker)}
+                    onCompanyClick = {onStockClick(stockList[0])}
                 )
                 StockItem(
                     modifier = Modifier.weight(1f),
                     stock = stockList[1],
                     stockType = stockType,
-                    onCompanyClick = {onStockClick(stockList[1].ticker)}
+                    onCompanyClick = {onStockClick(stockList[1])}
                 )
             }
             Row(
@@ -64,7 +64,7 @@ fun StockListSection(
                     modifier = Modifier.weight(1f),
                     stock = stockList[2],
                     stockType = stockType,
-                    onCompanyClick = {onStockClick(stockList[2].ticker)}
+                    onCompanyClick = {onStockClick(stockList[2])}
                 )
                 SeeMoreCard(
                     title1 = stockList[3].ticker,

@@ -14,13 +14,13 @@ interface AlphaVantageApiService {
 
     @GET("query?function=TOP_GAINERS_LOSERS")
     suspend fun getTopGainersLosers(
-        @Query("apikey") apiKey: String = API_KEY,
+        @Query("apikey") apiKey: String = "demo",
     ): TopGainersLosersActivesDto
 
     @GET("query?function=OVERVIEW")
     suspend fun getCompanyDetails(
         @Query("symbol") ticker: String,
-        @Query("apikey") apiKey: String = "demo",
+        @Query("apikey") apiKey: String = API_KEY,
     ): CompanyDetailsDto
 
     @GET("query?function=TIME_SERIES_INTRADAY")

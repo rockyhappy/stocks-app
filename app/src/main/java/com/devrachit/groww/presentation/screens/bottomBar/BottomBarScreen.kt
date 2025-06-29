@@ -62,11 +62,12 @@ import com.devrachit.groww.utility.constants.Constants.Companion.START_DESTINATI
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.shadow
 import com.devrachit.groww.domain.models.DisplayPassData
+import com.devrachit.groww.domain.models.Stock
 
 @Composable
 fun BottomBarScreen(
     title: String,
-    navigateToDetailsScreen: (ticker:String) -> Unit,
+    navigateToDetailsScreen: (stock: Stock) -> Unit,
     navigateToDisplayScreen: (passData: DisplayPassData) -> Unit,
     uiState: BottomBarScreenUiState,
     onThemeSelected: (ThemeMode) -> Unit
