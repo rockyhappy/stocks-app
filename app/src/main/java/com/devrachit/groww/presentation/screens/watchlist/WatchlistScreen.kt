@@ -33,7 +33,8 @@ fun WatchlistScreen(
     onRefresh: () -> Unit,
     onWatchlistEntry: (watchlistEntry: String) -> Unit,
     addWatchlist: (name: String) -> Unit,
-    deleteWatchlist: (watchlistEntity: WatchlistEntity) -> Unit
+    deleteWatchlist: (watchlistEntity: WatchlistEntity) -> Unit,
+    onCardClick:(watchlistEntity: WatchlistEntity)->Unit
 ) {
     LaunchedEffect(Unit) {
         onRefresh()
@@ -76,7 +77,7 @@ fun WatchlistScreen(
                 WatchlistItemCard(
                     watchlistEntity = uiState.allWatchlist[index],
                     deleteWatchlist = deleteWatchlist,
-                    onWatchlistEntry = onWatchlistEntry
+                    onCardClick = onCardClick
                 )
             }
         }

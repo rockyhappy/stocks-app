@@ -55,4 +55,8 @@ class WatchlistRepositoryImpl @Inject constructor(
         }
 
     }
+
+    override suspend fun getStocksFromWatchlist(watchlistId: Int): List<StocksEntity> {
+        return watchlistDao.getWatchlistWithStocks(watchlistId = watchlistId).stocks
+    }
 }

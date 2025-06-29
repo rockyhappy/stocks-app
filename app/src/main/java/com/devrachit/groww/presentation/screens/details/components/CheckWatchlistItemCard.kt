@@ -51,6 +51,7 @@ fun CheckWatchlistItemCard(
                 colors = CheckboxDefaults.colors(
                     checkedColor = colorResource(R.color.black),
                     uncheckedColor = colorResource(R.color.black),
+                    checkmarkColor = colorResource(R.color.white),
                 )
             )
             Text(

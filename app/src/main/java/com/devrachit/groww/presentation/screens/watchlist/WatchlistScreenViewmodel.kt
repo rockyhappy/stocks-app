@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.devrachit.groww.data.local.entity.WatchlistEntity
 import com.devrachit.groww.domain.usecases.watchlistDetails.AddWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.DeleteWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.GetAllStocksFromWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.GetAllWatchlist
 import com.devrachit.groww.utility.networkUtility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class WatchlistScreenViewmodel @Inject constructor(
     private val getWatchlist: GetAllWatchlist,
     private val addWatchlist: AddWatchlist,
-    private val deleteWatchlist: DeleteWatchlist
+    private val deleteWatchlist: DeleteWatchlist,
+    private val getAllStocksFromWatchlist:GetAllStocksFromWatchlist
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(WatchlistScreenUiStates())
     val uiState: StateFlow<WatchlistScreenUiStates> = _uiState.asStateFlow()
@@ -102,6 +104,25 @@ class WatchlistScreenViewmodel @Inject constructor(
                 when (it) {
                     is Resource.Success -> {
                         getAllWatchlist()
+                    }
+                    is Resource.Error -> {
+
+                    }
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+    fun getStocksFromWatchlist(watchlistEntity: WatchlistEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getAllStocksFromWatchlist.invoke(watchlistEntity.watchlist_id).collectLatest { result->
+                when (result) {
+                    is Resource.Success -> {
+                        _uiState.update {
+                            it.copy(stocksListPass = result.data?:emptyList())
+                        }
                     }
                     is Resource.Error -> {
 

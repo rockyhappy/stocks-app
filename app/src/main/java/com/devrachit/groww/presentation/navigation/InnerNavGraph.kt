@@ -66,7 +66,8 @@ fun NavGraph(
                 onRefresh = viewmodel::onRefresh,
                 onWatchlistEntry = viewmodel::onWatchlistEntryChanged,
                 addWatchlist = viewmodel::addWatchlist,
-                deleteWatchlist = viewmodel::deleteWatchlist
+                deleteWatchlist = viewmodel::deleteWatchlist,
+                onCardClick = viewmodel::getStocksFromWatchlist
             )
         }
     }

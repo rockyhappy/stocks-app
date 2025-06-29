@@ -24,12 +24,12 @@ import com.devrachit.groww.utility.composeUtility.sdp
 fun WatchlistItemCard(
     watchlistEntity: WatchlistEntity,
     deleteWatchlist: (watchlistEntity: WatchlistEntity) -> Unit,
-    onWatchlistEntry: (watchlistEntry: String) -> Unit
+    onCardClick:(watchlistEntity: WatchlistEntity) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.sdp, vertical = 8.sdp),
+            .padding(horizontal = 16.sdp, vertical = 8.sdp).clickable{onCardClick(watchlistEntity)},
         shape = RoundedCornerShape(8.sdp),
         elevation = 4.sdp,
         backgroundColor = colorResource(R.color.card_elevated)
@@ -62,7 +62,7 @@ fun WatchlistItemCard(
                 tint = colorResource(R.color.black),
                 modifier = Modifier
                     .size(12.sdp)
-                    .clickable { onWatchlistEntry("") }
+                    .clickable { onCardClick(watchlistEntity)}
             )
         }
     }
