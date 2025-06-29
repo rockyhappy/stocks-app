@@ -40,4 +40,19 @@ class WatchlistRepositoryImpl @Inject constructor(
         watchlistDao.insertCrossRef(crossRef=crossRef)
     }
 
+    override suspend fun deleteStockFromWatchlist(
+        stock: StocksEntity,
+        watchlistEntity: WatchlistEntity
+    ) {
+        val crossRef = WatchlistStockCrossRefEntity(
+            watchlist_id = watchlistEntity.watchlist_id,
+            ticker = stock.ticker
+        )
+        watchlistDao.deleteCrossRef(crossRef)
+        val stockWithWatchlists = watchlistDao.getStockWithWatchlists(stock.ticker)
+        if (stockWithWatchlists.watchlist.isEmpty()) {
+            watchlistDao.deleteStock(stock)
+        }
+
+    }
 }

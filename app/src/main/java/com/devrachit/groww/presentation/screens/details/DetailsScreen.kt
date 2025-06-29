@@ -90,7 +90,8 @@ fun DetailsScreen(
     onWatchlistEntryChanged : (String) -> Unit,
     addWatchlist : (String) -> Unit,
     deleteWatchlist : (watchlistEntity: WatchlistEntity) -> Unit,
-    addStockToWatchlist: (watchlistEntity: WatchlistEntity)->Unit
+    addStockToWatchlist: (watchlistEntity: WatchlistEntity)->Unit,
+    deleteStockFromWatchlist: (watchlistEntity: WatchlistEntity)->Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     var showBottomSheet = remember { mutableStateOf(false) }
@@ -154,7 +155,8 @@ fun DetailsScreen(
                     onWatchlistEntryChanged=onWatchlistEntryChanged,
                     addWatchlist = addWatchlist,
                     deleteWatchlist = deleteWatchlist,
-                    addStockToWatchlist = addStockToWatchlist
+                    addStockToWatchlist = addStockToWatchlist,
+                    deleteStockFromWatchlist = deleteStockFromWatchlist
                 ) }
 
             if (!uiState.isLoading && uiState.companyDetails != null) {

@@ -12,6 +12,7 @@ import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetMonthlyGraphD
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetWeeklyGraphData
 import com.devrachit.groww.domain.usecases.watchlistDetails.AddStockToWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.AddWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.DeleteStockFromWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.DeleteWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.GetAllWatchlist
 import com.devrachit.groww.domain.usecases.watchlistDetails.isStockInWatchList
@@ -37,7 +38,8 @@ class DetailsScreenViewmodel @Inject constructor(
     private val addWatchlist: AddWatchlist,
     private val deleteWatchlist: DeleteWatchlist,
     private val isStockInWatchlist: isStockInWatchList,
-    private val AddStockToWatchlist: AddStockToWatchlist
+    private val AddStockToWatchlist: AddStockToWatchlist,
+    private val deleteStockFromWatchlist: DeleteStockFromWatchlist
 ) : ViewModel() {
 
 
@@ -357,6 +359,32 @@ class DetailsScreenViewmodel @Inject constructor(
     fun addStockToWatchlist(watchlistEntity: WatchlistEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             AddStockToWatchlist.invoke(
+                stock = StocksEntity(
+                    ticker = _uiState.value.stock?.ticker ?: "",
+                    changeAmount = _uiState.value.stock?.changeAmount ?: "0.0",
+                    changePercentage = _uiState.value.stock?.changePercentage ?: "0.0",
+                    price = _uiState.value.stock?.price ?: "0.0",
+                    volume = _uiState.value.stock?.volume ?: "0.0"
+                ),
+                watchlistEntity = watchlistEntity
+            ).collectLatest {
+                when (it) {
+                    is Resource.Success -> {
+                        getAllWatchlist()
+                    }
+                    is Resource.Error -> {
+
+                    }
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+    fun deleteFromWatchlist(watchlistEntity: WatchlistEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteStockFromWatchlist.invoke(
                 stock = StocksEntity(
                     ticker = _uiState.value.stock?.ticker ?: "",
                     changeAmount = _uiState.value.stock?.changeAmount ?: "0.0",

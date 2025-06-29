@@ -19,7 +19,8 @@ fun BottomSheetContent(
     onWatchlistEntryChanged : (String) -> Unit,
     addWatchlist: (String) -> Unit,
     deleteWatchlist: (watchlistEntity: WatchlistEntity) -> Unit,
-    addStockToWatchlist: (watchlistEntity: WatchlistEntity) -> Unit
+    addStockToWatchlist: (watchlistEntity: WatchlistEntity) -> Unit,
+    deleteStockFromWatchlist: (watchlistEntity: WatchlistEntity) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
@@ -46,6 +47,9 @@ fun BottomSheetContent(
                 onCheckedChange = { isChecked ->
                     if (isChecked) {
                         addStockToWatchlist(uiState.allWatchlist[index])
+                    }
+                    else {
+                        deleteStockFromWatchlist(uiState.allWatchlist[index])
                     }
                 },
                 isChecked = if(uiState.stockWatchlist.contains(uiState.allWatchlist[index])) true else false

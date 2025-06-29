@@ -80,7 +80,8 @@ fun MainNavGraph(
                 onWatchlistEntryChanged = viewmodel::onWatchlistEntryChanged,
                 addWatchlist = viewmodel::addWatchlist,
                 deleteWatchlist = viewmodel::deleteWatchlist,
-                addStockToWatchlist = viewmodel::addStockToWatchlist
+                addStockToWatchlist = viewmodel::addStockToWatchlist,
+                deleteStockFromWatchlist = viewmodel::deleteFromWatchlist
             )
         }
         mainAnimatedComposable(screen = Screen.DisplayScreen) { backStackEntry ->
