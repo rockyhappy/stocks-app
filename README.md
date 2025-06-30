@@ -1,25 +1,55 @@
-# Groww - Stock Trading Android App
+# Quantify - Stock Trading Android App
 
 A modern Android stock trading application built with Jetpack Compose that provides real-time stock
 market data, watchlist management, and detailed stock analysis. This app follows Clean Architecture
 principles with MVVM pattern and implements modern Android development best practices.
 
+## 🎥 Demo Videos
+
+
+https://github.com/user-attachments/assets/7f6a0712-c39b-4836-ab51-e9b46207e045
+
+
+
 ## 📱 Screenshots
 
 ### Light Mode
 
-<!-- Add light mode screenshots here -->
-*Screenshots will be added here*
+<img src="https://github.com/user-attachments/assets/a16cadcc-242e-468e-9ffd-7ab7c3a4bd94" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/1eaea0fa-51c6-4c0b-b52d-356169fb34a2" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/b58b97d9-bcb3-4800-8e4b-5a53cf49a04f" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/1f7300f0-6a2e-463b-8eb5-0d80c351a036" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/4429d8b1-af17-4f0c-9ca8-c0d8fcc24a87" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/ee06cb6d-c957-4396-8ddc-4e9a0159fafb" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/626dfc61-0a76-4f38-a4bb-7f22fc7192cd" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/d701e1d6-f26e-4980-a131-eee6bbe876c5" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/4c7d4f8d-98c3-494e-8e6b-898db1b5b6a7" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/2dc5e9fc-d156-4f54-b0a8-f840a5c3afa4" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/6a8c66a2-6c94-4699-bbf1-d31c3d609bd6" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/9de6d1b1-9627-412d-acd5-060c8547f4d3" alt="Ken Sample" width="150" >
+
+
+
 
 ### Dark Mode
 
-<!-- Add dark mode screenshots here -->
-*Screenshots will be added here*
 
-## 🎥 Demo Videos
+<img src="https://github.com/user-attachments/assets/ad004384-f3fc-4c27-a0bd-736637b23167" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/ced37823-e95f-44b1-97c0-54d95c541f27" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/dcd94c5e-4b12-4e2e-8cda-0f364bacda0c" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/2656c704-db5c-4724-9411-bdd5c44aa7fe" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/5be2404d-180e-4d9d-885c-eae734a6c53b" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/f5f31beb-2613-49af-b7ef-21f337c49411" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/f6155581-7a3d-4144-84e1-0e241762674b" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/098b7815-b39a-41c4-b45b-39fe5790e350" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/acd6c3b6-0ccd-4856-b0c8-bb4a7bbd8502" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/085db5f0-5785-4d22-a4fc-26826d1dda03" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/cb26f2d3-be38-4352-9eec-d13d87654fad" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/9f97c744-748e-44c6-bfad-ecddc367acf5" alt="Ken Sample" width="150" >
+<img src="https://github.com/user-attachments/assets/2930a55f-56e0-4676-8f0e-e64f5d578435" alt="Ken Sample" width="150" >
 
-<!-- Add demo videos here -->
-*Demo videos will be added here*
+
+
 
 ## 📱 Features
 
