@@ -33,7 +33,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.devrachit.groww.R
 import com.devrachit.groww.domain.models.FilterType
 import com.devrachit.groww.presentation.screens.search.components.ProgressBar
@@ -73,78 +75,119 @@ fun SearchScreen(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
+        containerColor = colorResource(R.color.white)
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(color = colorResource(R.color.white))
-                .padding(vertical = 16.sdp)
         ) {
-            SearchTextField(
-                value = searchText,
-                onValueChange = onSearchTextChange,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable {
-                                navigateBack()
-                            },
-                        tint = colorResource(R.color.black)
-                    )
-                },
-                trailingIcon = {
-                    if (searchText.isNotEmpty()) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = null,
-                            modifier = Modifier.clickable {
-                                onClearSearchText()
-                            },
-                            tint = colorResource(R.color.black)
-                        )
-                    }
-                },
-                modifier = Modifier.focusRequester(focusRequester),
-                onSearchClick = {
-                    focusManager.clearFocus()
-                    onAddToSearchHistory()
-                }
-            )
-
-            FlowRow(
+            // Header Section
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.sdp, vertical = 8.sdp),
-                horizontalArrangement = Arrangement.spacedBy(8.sdp),
-                verticalArrangement = Arrangement.spacedBy(4.sdp)
+                    .background(colorResource(R.color.white))
+                    .padding(top = 16.sdp, bottom = 8.sdp)
             ) {
-                FilterType.entries.reversed().forEach { type ->
-                    FilterChip(
-                        selected = filterType == type,
-                        onClick = {
-                            onUpdateFilter(type)
-                        },
-                        label = {
-                            Text(
-                                text = type.text,
-                                color = colorResource(R.color.black)
+                SearchTextField(
+                    value = searchText,
+                    onValueChange = onSearchTextChange,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    navigateBack()
+                                },
+                            tint = colorResource(R.color.black)
+                        )
+                    },
+                    trailingIcon = {
+                        if (searchText.isNotEmpty()) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Clear",
+                                modifier = Modifier.clickable {
+                                    onClearSearchText()
+                                },
+                                tint = colorResource(R.color.black).copy(alpha = 0.7f)
                             )
                         }
-                    )
+                    },
+                    modifier = Modifier.focusRequester(focusRequester),
+                    onSearchClick = {
+                        focusManager.clearFocus()
+                        onAddToSearchHistory()
+                    }
+                )
+
+                // Filter Chips
+                FlowRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.sdp, vertical = 8.sdp),
+                    horizontalArrangement = Arrangement.spacedBy(8.sdp),
+                    verticalArrangement = Arrangement.spacedBy(4.sdp)
+                ) {
+                    FilterType.entries.reversed().forEach { type ->
+                        FilterChip(
+                            selected = filterType == type,
+                            onClick = {
+                                onUpdateFilter(type)
+                            },
+                            label = {
+                                Text(
+                                    text = type.text,
+                                    color = if (filterType == type) 
+                                        colorResource(R.color.white) 
+                                    else 
+                                        colorResource(R.color.black)
+                                )
+                            },
+                            colors = androidx.compose.material3.FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = colorResource(R.color.black),
+                                selectedLabelColor = colorResource(R.color.white),
+                                containerColor = colorResource(R.color.card_elevated),
+                                labelColor = colorResource(R.color.black)
+                            )
+                        )
+                    }
                 }
             }
-//            Text(text=uiState.toString(),color=colorResource(R.color.black))
+
+            // Content Section
             if (uiState.isLoading) {
                 ProgressBar()
             } else {
                 LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 16.sdp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(colorResource(R.color.white)),
+                    contentPadding = PaddingValues(horizontal = 16.sdp, vertical = 8.sdp),
+                    verticalArrangement = Arrangement.spacedBy(4.sdp)
                 ) {
-                    if (filteredSearchResults.isEmpty()) {
+                    if (filteredSearchResults.isEmpty() && searchText.isNotEmpty()) {
+                        item {
+                            Text(
+                                text = "No results found",
+                                color = colorResource(R.color.black).copy(alpha = 0.6f),
+                                modifier = Modifier.padding(16.sdp)
+                            )
+                        }
+                    } else if (filteredSearchResults.isEmpty()) {
+                        if (uiState.searchHistory.isNotEmpty()) {
+                            item {
+                                Text(
+                                    text = "Recent Searches",
+                                    color = colorResource(R.color.black),
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(vertical = 12.sdp, horizontal = 4.sdp)
+                                )
+                            }
+                        }
                         items(
                             items = uiState.searchHistory,
                             key = { it.id }
@@ -154,6 +197,15 @@ fun SearchScreen(
                             }
                         }
                     } else {
+                        item {
+                            Text(
+                                text = "Search Results",
+                                color = colorResource(R.color.black),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(vertical = 12.sdp, horizontal = 4.sdp)
+                            )
+                        }
                         items(
                             items = filteredSearchResults,
                             key = { it.symbol }
