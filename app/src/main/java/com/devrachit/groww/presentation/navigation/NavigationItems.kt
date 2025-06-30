@@ -29,6 +29,12 @@ fun rememberNavigationItems() = remember {
             R.drawable.ic_sheets_outlined,
             R.drawable.ic_sheets_filled,
             Screen.WaitlistScreen.route
+        ),
+        2 to NavItemData(
+            "Search",
+            R.drawable.ic_search,
+            R.drawable.ic_search,
+            Screen.SearchScreen.route
         )
     )
 }
@@ -42,6 +48,7 @@ fun getRouteIndex(route: String?): Int? {
     return when (route) {
         Screen.HomeScreen.route -> 0
         Screen.WaitlistScreen.route -> 1
+        Screen.SearchScreen.route -> 2
         else -> null
     }
 }

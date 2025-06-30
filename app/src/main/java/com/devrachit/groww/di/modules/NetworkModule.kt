@@ -64,7 +64,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAlphaVantageApi(@WithoutChucker okhttpClient: OkHttpClient): AlphaVantageApiService {
+    fun provideAlphaVantageApi(@WithChucker okhttpClient: OkHttpClient): AlphaVantageApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okhttpClient)

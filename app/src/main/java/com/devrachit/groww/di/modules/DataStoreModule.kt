@@ -31,4 +31,8 @@ object DataStoreModule {
     @Singleton
     fun providesWatchlistDao(database: AppDatabase) = database.watchlistDao()
 
+    @Provides
+    @Singleton
+    fun providesSearchHistoryDao(database: AppDatabase) = database.searchHistoryDao()
+
 }

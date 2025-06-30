@@ -11,7 +11,7 @@ import com.devrachit.groww.data.local.mappers.WatchlistWithStocks
 interface WatchlistDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWatchlist(watchlist: WatchlistEntity):Long
+    suspend fun insertWatchlist(watchlist: WatchlistEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStock(stock: StocksEntity)
@@ -44,14 +44,16 @@ interface WatchlistDao {
     @Query("SELECT COUNT(*) FROM watchlist_stock_cross_ref WHERE watchlist_id = :watchlistId")
     suspend fun getWatchlistStockCount(watchlistId: Int): Int
 
-    @Query("""
+    @Query(
+        """
         UPDATE watchlists 
         SET count = (
             SELECT COUNT(*) 
             FROM watchlist_stock_cross_ref 
             WHERE watchlist_stock_cross_ref.watchlist_id = watchlists.watchlist_id
         )
-    """)
+    """
+    )
     suspend fun updateAllWatchlistCounts()
 
     @Query("SELECT * FROM watchlists")

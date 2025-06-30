@@ -4,6 +4,7 @@ import com.devrachit.groww.data.remote.dto.CompanyDetailsDto
 import com.devrachit.groww.data.remote.dto.DailyGraphDataDto
 import com.devrachit.groww.data.remote.dto.IntraDayGraphDto
 import com.devrachit.groww.data.remote.dto.MonthlyGraphDataDto
+import com.devrachit.groww.data.remote.dto.SearchResultDto
 import com.devrachit.groww.data.remote.dto.TopGainersLosersActivesDto
 import com.devrachit.groww.data.remote.dto.WeeklyGraphDataDto
 import com.devrachit.groww.utility.constants.Constants.Companion.API_KEY
@@ -48,10 +49,10 @@ interface AlphaVantageApiService {
         @Query("apikey") apiKey: String = API_KEY,
     ): MonthlyGraphDataDto
 
-//    @GET("query?function=SYMBOL_SEARCH")
-//    suspend fun search(
-//        @Query("keywords") query: String,
-//        @Query("apikey") apiKey: String = API_KEY,
-//    ): SearchDto
+    @GET("query?function=SYMBOL_SEARCH")
+    suspend fun search(
+        @Query("keywords") query: String,
+        @Query("apikey") apiKey: String = API_KEY,
+    ): SearchResultDto
 
 }

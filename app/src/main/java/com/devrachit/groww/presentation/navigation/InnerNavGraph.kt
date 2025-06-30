@@ -13,6 +13,8 @@ import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.domain.models.StockType
 import com.devrachit.groww.presentation.screens.home.HomeScreen
 import com.devrachit.groww.presentation.screens.home.HomeScreenViewmodel
+import com.devrachit.groww.presentation.screens.search.SearchScreen
+import com.devrachit.groww.presentation.screens.search.SearchViewmodel
 import com.devrachit.groww.presentation.screens.watchlist.WatchlistScreen
 import com.devrachit.groww.presentation.screens.watchlist.WatchlistScreenViewmodel
 import com.devrachit.groww.utility.constants.Constants.Companion.MOSTLY_TRADED
@@ -69,6 +71,30 @@ fun NavGraph(
                 deleteWatchlist = viewmodel::deleteWatchlist,
                 onCardClick = { watchlistEntity ->
                     viewmodel.getStocksFromWatchlist(watchlistEntity, onNavigateToDisplay)
+                }
+            )
+        }
+        animatedComposable(Screen.SearchScreen.route)
+        {
+            val viewmodel = hiltViewModel<SearchViewmodel>()
+            val uiState = viewmodel.searchStates.collectAsStateWithLifecycle().value
+            val searchText = viewmodel.searchText.collectAsStateWithLifecycle().value
+            val filterType = viewmodel.filterType.collectAsStateWithLifecycle().value
+            SearchScreen(
+                searchText = searchText,
+                uiState = uiState,
+                filterType = filterType,
+                onSearchTextChange = viewmodel::onSearchTextChange,
+                onClearSearchText = viewmodel::clearSearchText,
+                onAddToSearchHistory = viewmodel::addToSearchHistoryData,
+                onUpdateFilter = viewmodel::updateFilter,
+                onResetErrorMessage = viewmodel::resetErrorMessage,
+                navigateTo = { symbol ->
+                    // Navigate to details screen with the symbol
+                    // You might want to convert symbol to Stock object if needed
+                },
+                navigateBack = {
+                    navController.popBackStack()
                 }
             )
         }

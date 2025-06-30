@@ -7,6 +7,7 @@ class Constants {
         const val DISPLAY_ROUTE = "display"
         const val WAITLIST_ROUTE = "waitlist"
         const val BOTTOM_BAR_ROUTE = "bottom_bar"
+        const val SEARCH_ROUTE = "search"
         const val MAIN_ANIMATION_DURATION = 300
         const val START_DESTINATION = BOTTOM_BAR_ROUTE
         const val START_DESTINATION_INNER_NAV = HOME_ROUTE
