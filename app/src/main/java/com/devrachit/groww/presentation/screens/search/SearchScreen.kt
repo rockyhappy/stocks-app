@@ -109,10 +109,11 @@ fun SearchScreen(
                     }
                 },
                 modifier = Modifier.focusRequester(focusRequester),
-            ) {
-                focusManager.clearFocus()
-                onAddToSearchHistory()
-            }
+                onSearchClick = {
+                    focusManager.clearFocus()
+                    onAddToSearchHistory()
+                }
+            )
 
             FlowRow(
                 modifier = Modifier
@@ -136,7 +137,7 @@ fun SearchScreen(
                     )
                 }
             }
-//            Text(text=filteredSearchResults.toString(),color=colorResource(R.color.black))
+//            Text(text=uiState.toString(),color=colorResource(R.color.black))
             if (uiState.isLoading) {
                 ProgressBar()
             } else {

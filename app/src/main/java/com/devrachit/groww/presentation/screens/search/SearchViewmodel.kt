@@ -1,5 +1,6 @@
 package com.devrachit.groww.presentation.screens.search
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devrachit.groww.data.local.entity.SearchHistoryEntity
@@ -9,6 +10,7 @@ import com.devrachit.groww.domain.usecases.SearchUsecases.GetSearchHistory
 import com.devrachit.groww.domain.usecases.SearchUsecases.GetSearchResults
 import com.devrachit.groww.utility.networkUtility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -100,8 +102,9 @@ class SearchViewmodel @Inject constructor(
     }
 
     fun addToSearchHistoryData() {
+        Log.d("SearchViewmodel", "addToSearchHistoryData: ${searchText.value}")
         if (searchText.value.isNotBlank()) {
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 addToSearchHistory(
                     SearchHistoryEntity(
                         query = searchText.value,

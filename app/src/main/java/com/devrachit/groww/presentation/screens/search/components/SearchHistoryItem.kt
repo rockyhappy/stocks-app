@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,10 +27,14 @@ fun SearchHistoryItem(searchHistory: SearchHistoryEntity, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.sdp)
     ) {
-        Icon(painter = painterResource(id = R.drawable.ic_history), contentDescription = null)
+        Icon(
+            painter = painterResource(id = R.drawable.ic_history),
+            contentDescription = null,
+            modifier=Modifier.size(24.sdp)
+        )
         Text(
             text = searchHistory.query,
-            color = colorResource( R.color.black)
+            color = colorResource(R.color.black)
         )
     }
 }
