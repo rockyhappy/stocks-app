@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import com.devrachit.groww.R
+import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.domain.models.StockType
 import com.devrachit.groww.presentation.screens.home.components.StockItem
 import com.devrachit.groww.ui.theme.TextStyleInter18Lh24Fw700
@@ -46,7 +47,7 @@ fun DisplayListScreen(
     uiState: DisplayListUiState,
     onRefresh: () -> Unit,
     title: String,
-    navigateToDetailsScreen: (ticker:String) -> Unit
+    navigateToDetailsScreen: (stock: Stock) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -93,10 +94,10 @@ fun DisplayListScreen(
                         stockType = when (title) {
                             TOP_GAINERS -> StockType.Gainer()
                             TOP_LOSERS-> StockType.Loser()
+                            MOSTLY_TRADED -> StockType.Active()
                             else -> StockType.Active()
-
                         },
-                        onCompanyClick = {navigateToDetailsScreen(uiState.data[index].ticker)}
+                        onCompanyClick = {navigateToDetailsScreen(uiState.data[index])}
                     )
                 }
             }

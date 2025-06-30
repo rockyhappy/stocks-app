@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.domain.models.StockType
 import com.devrachit.groww.domain.usecases.GetGainerLoserActiveStocks.GetGainerLoserActiveStocks
+import com.devrachit.groww.utility.constants.Constants.Companion.MOSTLY_TRADED
 import com.devrachit.groww.utility.constants.Constants.Companion.TOP_GAINERS
 import com.devrachit.groww.utility.constants.Constants.Companion.TOP_LOSERS
 import com.devrachit.groww.utility.networkUtility.Resource
@@ -56,7 +57,8 @@ class DisplayScreenViewmodel @Inject constructor(
                             data=when(_uiState.value.title){
                                 TOP_GAINERS -> {response.data?.topGainers ?: emptyList()}
                                 TOP_LOSERS->{response.data?.topLosers ?: emptyList()}
-                                else -> {response.data?.mostActive ?: emptyList()}
+                                MOSTLY_TRADED -> {response.data?.mostActive ?: emptyList()}
+                                else -> {emptyList()}
                             }
                         )
                     }

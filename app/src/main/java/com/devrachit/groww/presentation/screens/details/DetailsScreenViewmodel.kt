@@ -2,11 +2,20 @@ package com.devrachit.groww.presentation.screens.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.devrachit.groww.data.local.entity.StocksEntity
+import com.devrachit.groww.data.local.entity.WatchlistEntity
+import com.devrachit.groww.domain.models.Stock
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetCompanyDetails
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetDailyGraphData
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetIntraDayGraphData
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetMonthlyGraphData
 import com.devrachit.groww.domain.usecases.CompanyStocksDetails.GetWeeklyGraphData
+import com.devrachit.groww.domain.usecases.watchlistDetails.AddStockToWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.AddWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.DeleteStockFromWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.DeleteWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.GetAllWatchlist
+import com.devrachit.groww.domain.usecases.watchlistDetails.isStockInWatchList
 import com.devrachit.groww.utility.networkUtility.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +33,13 @@ class DetailsScreenViewmodel @Inject constructor(
     private val getIntraDayOhlcvData: GetIntraDayGraphData,
     private val getDailyGraphData: GetDailyGraphData,
     private val getMonthlyGraphData: GetMonthlyGraphData,
-    private val getWeeklyGraphData: GetWeeklyGraphData
+    private val getWeeklyGraphData: GetWeeklyGraphData,
+    private val getWatchlist: GetAllWatchlist,
+    private val addWatchlist: AddWatchlist,
+    private val deleteWatchlist: DeleteWatchlist,
+    private val isStockInWatchlist: isStockInWatchList,
+    private val AddStockToWatchlist: AddStockToWatchlist,
+    private val deleteStockFromWatchlist: DeleteStockFromWatchlist
 ) : ViewModel() {
 
 
@@ -41,6 +56,58 @@ class DetailsScreenViewmodel @Inject constructor(
     fun setTicker(ticker: String) {
         _uiState.update { it.copy(ticker = ticker) }
 
+    }
+
+    fun onWatchlistEntryChanged(watchlistName: String) {
+        _uiState.update {
+            it.copy(
+                watchlistEntry = watchlistName
+            )
+        }
+    }
+
+    fun setStock(stock: Stock) {
+        _uiState.update { it.copy(stock = stock) }
+        isStockInWatchlist(ticker = _uiState.value.stock?.ticker ?: _uiState.value.ticker)
+        viewModelScope.launch(Dispatchers.IO) {
+            getAllWatchlist()
+        }
+
+    }
+
+    private fun isStockInWatchlist(ticker: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            isStockInWatchlist.invoke(ticker).collectLatest { result ->
+                when (result) {
+                    is Resource.Loading -> {
+
+                    }
+
+                    is Resource.Success -> {
+                        if (result.data != null && result.data.isNotEmpty()) {
+                            _uiState.update {
+                                it.copy(
+                                    isBookmarkAdded = true,
+                                    stockWatchlist = result.data
+                                )
+                            }
+
+                        } else {
+                            _uiState.update {
+                                it.copy(
+                                    isBookmarkAdded = false,
+                                    stockWatchlist = emptyList()
+                                )
+                            }
+                        }
+                    }
+
+                    is Resource.Error -> {
+
+                    }
+                }
+            }
+        }
     }
 
     fun getCompanyDetails() {
@@ -83,7 +150,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _uiState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message
+                        )
                     }
                 }
 
@@ -109,7 +179,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _graphState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message
+                        )
                     }
                 }
 
@@ -140,7 +213,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _graphState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message
+                        )
                     }
                 }
 
@@ -171,7 +247,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _graphState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message
+                        )
                     }
                 }
 
@@ -202,7 +281,10 @@ class DetailsScreenViewmodel @Inject constructor(
 
                 is Resource.Error -> {
                     _graphState.update {
-                        it.copy(isLoading = false, error = response.message)
+                        it.copy(
+                            isLoading = false,
+                            error = response.message ?: "An unexpected error occurred"
+                        )
                     }
                 }
 
@@ -219,6 +301,137 @@ class DetailsScreenViewmodel @Inject constructor(
                         )
                     }
 
+                }
+            }
+        }
+    }
+
+    private suspend fun getAllWatchlist() {
+        getWatchlist.invoke().collectLatest { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _uiState.update {
+                        it.copy(isLoading = false, allWatchlist = result.data ?: emptyList())
+                    }
+                }
+
+                is Resource.Error -> {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = result.message ?: "An unexpected error occurred"
+                        )
+                    }
+                }
+
+                is Resource.Loading -> {
+                    _uiState.update {
+                        it.copy(isLoading = true)
+                    }
+                }
+            }
+        }
+    }
+
+    fun addWatchlist(watchlistName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = WatchlistEntity(
+                name = watchlistName,
+                count = 0
+            )
+            println(data)
+
+            addWatchlist.invoke(data).collectLatest { result ->
+                println(result)
+                when (result) {
+                    is Resource.Success -> {
+                        getAllWatchlist()
+                    }
+
+                    is Resource.Error -> {
+
+                    }
+
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun deleteWatchlist(watchlistEntity: WatchlistEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteWatchlist.invoke(watchlistEntity).collectLatest {
+                when (it) {
+                    is Resource.Success -> {
+                        getAllWatchlist()
+                        isStockInWatchlist(ticker = _uiState.value.stock?.ticker ?: _uiState.value.ticker)
+                    }
+
+                    is Resource.Error -> {
+
+                    }
+
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun addStockToWatchlist(watchlistEntity: WatchlistEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            AddStockToWatchlist.invoke(
+                stock = StocksEntity(
+                    ticker = _uiState.value.stock?.ticker ?: "",
+                    changeAmount = _uiState.value.stock?.changeAmount ?: "0.0",
+                    changePercentage = _uiState.value.stock?.changePercentage ?: "0.0",
+                    price = _uiState.value.stock?.price ?: "0.0",
+                    volume = _uiState.value.stock?.volume ?: "0.0"
+                ),
+                watchlistEntity = watchlistEntity
+            ).collectLatest {
+                when (it) {
+                    is Resource.Success -> {
+                        getAllWatchlist()
+                        isStockInWatchlist(ticker = _uiState.value.stock?.ticker ?: _uiState.value.ticker)
+                    }
+                    is Resource.Error -> {
+
+                    }
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun deleteFromWatchlist(watchlistEntity: WatchlistEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteStockFromWatchlist.invoke(
+                stock = StocksEntity(
+                    ticker = _uiState.value.stock?.ticker ?: "",
+                    changeAmount = _uiState.value.stock?.changeAmount ?: "0.0",
+                    changePercentage = _uiState.value.stock?.changePercentage ?: "0.0",
+                    price = _uiState.value.stock?.price ?: "0.0",
+                    volume = _uiState.value.stock?.volume ?: "0.0"
+                ),
+                watchlistEntity = watchlistEntity
+            ).collectLatest {
+                when (it) {
+                    is Resource.Success -> {
+                        getAllWatchlist()
+                        isStockInWatchlist(ticker = _uiState.value.stock?.ticker ?: _uiState.value.ticker)
+                    }
+                    is Resource.Error -> {
+
+                    }
+                    is Resource.Loading -> {
+
+                    }
                 }
             }
         }
