@@ -70,7 +70,7 @@ fun MainNavGraph(
             val graphState =viewmodel.graphState.collectAsStateWithLifecycle()
             viewmodel.setTicker(passData?.ticker?:"")
             viewmodel.setStock(passData?:Stock("","","","",""))
-            viewmodel.setTicker("IBM")
+//            viewmodel.setTicker("IBM")
             DetailsScreen(
                 title = passData?.ticker?:uiState.value.title,
                 onRefresh = viewmodel::getCompanyDetails,

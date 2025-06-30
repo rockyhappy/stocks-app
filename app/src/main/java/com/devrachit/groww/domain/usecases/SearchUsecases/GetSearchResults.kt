@@ -13,7 +13,7 @@ class GetSearchResults@Inject constructor(
 ) {
     operator fun invoke(query: String) : Flow<Resource<List<SearchResult>>> = flow{
         emit(Resource.Loading())
-        val result = safeApiCall { repository.search("tesco").bestMatches.map { it.toDomainModel() } }
+        val result = safeApiCall { repository.search(query).bestMatches.map { it.toDomainModel() } }
         emit(result)
 
     }
