@@ -1,8 +1,15 @@
-# Groww - Stock Trading Android App
+# Quantify - Stock Trading Android App
 
 A modern Android stock trading application built with Jetpack Compose that provides real-time stock
 market data, watchlist management, and detailed stock analysis. This app follows Clean Architecture
 principles with MVVM pattern and implements modern Android development best practices.
+
+## 🎥 Demo Videos
+
+
+https://github.com/user-attachments/assets/7f6a0712-c39b-4836-ab51-e9b46207e045
+
+
 
 ## 📱 Screenshots
 
@@ -43,10 +50,6 @@ principles with MVVM pattern and implements modern Android development best prac
 
 
 
-## 🎥 Demo Videos
-
-<!-- Add demo videos here -->
-*Demo videos will be added here*
 
 ## 📱 Features
 
